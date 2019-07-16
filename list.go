@@ -26,7 +26,7 @@ func Each(data Lister, f EachFn){
 
 func Map(data Lister, f MapFn) Lister {
 	l := data.Len()
-	list = data.New()
+	list := data.New()
 	for i := 0; i < l; i++ {
 		list.Set(i, f(data.Get(i), i, data))
 	}
