@@ -35,8 +35,17 @@ func TestList(t *testing.T) {
 func TestFilter(t *testing.T) {
 	list := List{[]Item{1,2,3,4,5,6,7}}
 	list2 := Filter(&list, func(v Item, i int) bool {
-		fmt.Println("in filter loop ", v, i, v.(int) % 2 == 0)
 		return v.(int) % 2 == 0
 	})
 	t.Errorf("%v", list2)
+}
+
+func TestFindIndex(t *testing.T) {
+	list := List{[]Item{'a', 'b', 'c', 'd', 'e'}}
+	index := FindIndex(&list, func(v Item, i int) bool {
+		return v.(rune) == 'e'
+	})
+	if index != 4 {
+		t.Errorf("expect item index is 4 but got %v", index)
+	}
 }
