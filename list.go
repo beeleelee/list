@@ -61,6 +61,23 @@ func FindIndex(list Lister, f FilterFn) (index int) {
 	return
 }
 
+func Equal(s Lister, t Lister) (r bool) {
+	sLen := s.Len()
+	tLen := t.Len()
+	r = true 
+	if sLen != tLen {
+		r = false
+		return 
+	}
+	for i := 0; i < sLen; i++ {
+		if s.Get(i) != t.Get(i) {
+			r = false
+			break
+		}
+	}
+	return 
+}
+
 type List struct {
 	Data []Item 
 }
