@@ -55,3 +55,17 @@ func TestEqual(t *testing.T) {
 		t.Errorf("s %v should be equal to t %v, but got not equal", a, b)
 	}
 }
+
+func TestFind(t *testing.T) {
+	type User struct {
+		name string
+		age int
+	}
+	list := List{[]Item{User{"alex", 38}, User{"beeleelee", 40}}}
+	item := Find(&list, func(v Item, i int) bool {
+		return v.(User).name == "alex"
+	})
+	if item == nil {
+		t.Errorf("seems Find not work")
+	}
+}

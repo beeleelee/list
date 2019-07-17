@@ -49,18 +49,6 @@ func Filter(list Lister, f FilterFn) Lister {
 	return filteredList
 }
 
-func FindIndex(list Lister, f FilterFn) (index int) {
-	l := list.Len()
-	index = -1
-	for i := 0; i < l; i++ {
-		if f(list.Get(i), i) {
-			index = i
-			break
-		}
-	}
-	return
-}
-
 func Equal(s Lister, t Lister) (r bool) {
 	sLen := s.Len()
 	tLen := t.Len()
@@ -77,6 +65,32 @@ func Equal(s Lister, t Lister) (r bool) {
 	}
 	return 
 }
+
+func FindIndex(list Lister, f FilterFn) (index int) {
+	l := list.Len()
+	index = -1
+	for i := 0; i < l; i++ {
+		if f(list.Get(i), i) {
+			index = i
+			break
+		}
+	}
+	return
+}
+
+func Find(list Lister, f FilterFn) (r Item) {
+	l := list.Len()
+	r  = nil
+	for i := 0; i < l; i++ {
+		r = list.Get(i)
+		if f(r, i) {
+			break
+		}
+	}
+	return
+}
+
+
 
 type List struct {
 	Data []Item 
