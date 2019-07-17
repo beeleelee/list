@@ -16,11 +16,6 @@ func (l IntList) Get(i int) Item {
 	return l[i]
 }
 
-func (l IntList) New() Lister {
-	n := len(l)
-	return IntList(make([]int, n))
-}
-
 func (l IntList) Set(i int, v Item) {
 	l[i] = v.(int)
 }
@@ -30,7 +25,7 @@ func (l IntList) Equal(target Lister) bool {
 		return false
 	}
 	r := true 
-	Each(l, func(v Item, i int, l Lister){
+	Each(l, func(v Item, i int){
 		if v != target.Get(i) {
 			r = false
 		}
@@ -40,14 +35,14 @@ func (l IntList) Equal(target Lister) bool {
 
 func TestEach(t *testing.T) {
 	arr := IntList([]int{1,3,5,7,9})
-	Each(arr, func(v Item, i int, l Lister){
+	Each(arr, func(v Item, i int){
 		fmt.Printf("item %v has type of %T\n", v, v)
 	})
 }
 
 func TestMap(t *testing.T) {
 	arr := IntList([]int{1,3,5,7,9})
-	newArr := Map(arr, func(v Item, i int, l Lister) Item {
+	newArr := Map(arr, func(v Item, i int) Item {
 		return v.(int) * 2
 	})
 	if !IntList([]int{2, 6, 10, 14, 18}).Equal(newArr) {

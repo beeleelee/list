@@ -8,27 +8,26 @@ type Lister interface {
 	Len() int 
 	Get(i int) Item 
 	Set(i int, v Item)
-	New() Lister 
 }
 
 // type for each function handle 
-type EachFn func(v Item, i int, l Lister)
+type EachFn func(v Item, i int)
 
 // type for map function handle
-type MapFn func(v Item, i int, l Lister) Item 
+type MapFn func(v Item, i int) Item 
 
-func Each(data Lister, f EachFn){
-	l := data.Len()
+func Each(list Lister, f EachFn){
+	l := list.Len()
 	for i := 0; i < l; i++ {
-		f(data.Get(i), i, data)
+		f(list.Get(i), i)
 	}
 }
 
-func Map(data Lister, f MapFn) Lister {
-	l := data.Len()
-	list := data.New()
+func Map(list Lister, f MapFn) Lister {
+	l := list.Len()
+	mapedList := list 
 	for i := 0; i < l; i++ {
-		list.Set(i, f(data.Get(i), i, data))
+		mapedList.Set(i, f(list.Get(i), i))
 	}
-	return list 
+	return mapedList
 }
