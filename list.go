@@ -33,3 +33,19 @@ func Map(list Lister, f MapFn) Lister {
 	}
 	return mapedList
 }
+
+type List struct {
+	data []Item 
+}
+
+func (l List) Len() int {
+	return len(l.data)
+}
+
+func (l List) Get(i int) Item {
+	return l.data[i]
+}
+
+func (l List) Set(i int, v Item) {
+	l.data[i] = v 
+}
