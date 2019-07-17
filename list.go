@@ -35,17 +35,17 @@ func Map(list Lister, f MapFn) Lister {
 }
 
 type List struct {
-	data []Item 
+	Data []Item 
 }
 
 func (l List) Len() int {
-	return len(l.data)
+	return len(l.Data)
 }
 
 func (l List) Get(i int) Item {
-	return l.data[i]
+	return l.Data[i]
 }
 
 func (l List) Set(i int, v Item) {
-	l.data[i] = v 
+	l.Data[i] = v 
 }

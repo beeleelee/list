@@ -49,3 +49,11 @@ func TestMap(t *testing.T) {
 		t.Errorf("before map %v \n after map %v", arr, newArr)
 	}
 }
+
+func TestList(t *testing.T) {
+	list := List{[]Item{1,2,3}}
+	list2 := Map(list, func(v Item, i int) Item {
+		return v.(int) * 2
+	})
+	
+}
