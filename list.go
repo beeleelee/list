@@ -2,7 +2,7 @@ package list
 
 import (
 	"reflect"
-	"errors"
+	"fmt"
 )
 
 // #package list
@@ -60,7 +60,7 @@ func From(source interface{}) (nl List, e error) {
 		nl = List{data}
 		e = nil
 	}else{
-		e = errors.New("ListFrom only accept slice or array input")
+		e = fmt.Errorf("ListFrom only accept slice or array input, but got %v", rv.Kind())
 	}
 
 	return
