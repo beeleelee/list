@@ -88,13 +88,17 @@ type MapFn func(v Item, i int) Item
 
 //FilterFn filter loop handle
 //
-// func(v Item, i int) (b bool) {
+// func(v Item, i int) bool {
 // 	sv := v.(string)
 // 	return sv == "foo"
 // }
 type FilterFn func(v Item, i int) bool 
 
-//CmpFn type for Equal compare handle
+//CmpFn compare handle
+//
+// func(a, b Item) bool {
+// 	return a == b 
+// }
 type CmpFn func(a, b Item) bool 
 
 
