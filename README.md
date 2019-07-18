@@ -1,5 +1,9 @@
 # list
-Collection manipulation utilities.
+
+list provide some useful utilities for manipulate collection
+in the form of functional programming inspired by underscore.js
+
+hope, it will be helpful
 
 ## Example - basic usage
 
