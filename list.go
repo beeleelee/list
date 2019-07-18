@@ -8,8 +8,9 @@ import (
 // #package list
 //
 //	list provide some useful utilities for manipulate collection
-// 	in the form of functional programming
-// 	inspired by underscore.js
+//
+// 	in the form of functional programming inspired by underscore.js
+//
 //	hope it will be helpful
 //
 // ##Example
@@ -70,6 +71,39 @@ type Lister interface {
 	Set(int, Item) error
 	New(int) Lister
 	Append(...Item)
+}
+
+type List struct {
+	Data []Item
+}
+
+func (l *List) Len() int {
+	return len(l.Data)
+}
+
+func (l *List) Get(i int) Item {
+	return l.Data[i]
+}
+
+func (l *List) Set(i int, v Item) (e error) {
+	size := l.Len()
+	if i < 0 || i > size-1 {
+		e = fmt.Errorf("the input index: %v is out of range", i)
+		return
+	}
+	l.Data[i] = v
+	e = nil
+	return
+}
+
+func (_ *List) New(n int) Lister {
+	r := new(List)
+	r.Data = make([]Item, n)
+	return r
+}
+
+func (l *List) Append(v ...Item) {
+	l.Data = append(l.Data, v...)
 }
 
 //EachFn  each loop handle signature
@@ -197,47 +231,27 @@ func FindIndex(list Lister, f FilterFn) (index int) {
 	return
 }
 
-func Find(list Lister, f FilterFn) (r Item) {
+func Find(list Lister, f FilterFn) (r Item, ok bool) {
 	l := list.Len()
-	r = nil
+	var item Item
 	for i := 0; i < l; i++ {
-		r = list.Get(i)
-		if f(r, i) {
+		item = list.Get(i)
+		ok = false
+		if f(item, i) {
+			r = item
+			ok = true
 			break
 		}
 	}
 	return
 }
 
-type List struct {
-	Data []Item
-}
-
-func (l *List) Len() int {
-	return len(l.Data)
-}
-
-func (l *List) Get(i int) Item {
-	return l.Data[i]
-}
-
-func (l *List) Set(i int, v Item) (e error) {
-	size := l.Len()
-	if i < 0 || i > size-1 {
-		e = fmt.Errorf("*List Set - the input index: %v is out of range\n", i)
-		return
+func Contain(list Lister, f FilterFn) (r bool) {
+	fmt.Println(Find(list, f))
+	if _, ok := Find(list, f); ok {
+		r = true
+	} else {
+		r = false
 	}
-	l.Data[i] = v
-	e = nil
 	return
-}
-
-func (_ *List) New(n int) Lister {
-	r := new(List)
-	r.Data = make([]Item, n)
-	return r
-}
-
-func (l *List) Append(v ...Item) {
-	l.Data = append(l.Data, v...)
 }

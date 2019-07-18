@@ -1,6 +1,7 @@
 package list_test
 
 import (
+	"fmt"
 	"testing"
 	. "../list"
 )
@@ -68,11 +69,35 @@ func TestFind(t *testing.T) {
 		name string
 		age int
 	}
-	list, _ := From([]User{{"alex", 38},{"beeleelee", 40}})
-	item := Find(&list, func(v Item, i int) bool {
+	userAlex := User{"alex", 38}
+	userBeeleelee := User{"beeleelee", 40}
+	list, _ := From([]User{userAlex,userBeeleelee})
+	item, ok := Find(&list, func(v Item, i int) bool {
 		return v.(User).name == "alex"
 	})
-	if item == nil {
+	
+	if userAlex == item {
+		fmt.Printf("%v equals %v, %v", item, userAlex, ok)
+	}else{
+		fmt.Printf("%v not equals %v, %v", userAlex, item, ok)
+	}
+	
+	if !ok {
 		t.Errorf("seems Find not work")
+	}
+}
+
+func TestContain(t *testing.T) {
+	type User struct {
+		name string
+		age int
+	}
+	list, _ := From([]User{{"alex", 38},{"beeleelee", 40}})
+	hasFoo := Contain(&list, func(v Item, i int) bool {
+		return v.(User).name == "foo"
+	})
+	
+	if hasFoo {
+		t.Errorf("seems Contain not work")
 	}
 }
