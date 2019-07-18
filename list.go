@@ -86,7 +86,12 @@ type EachFn func(v Item, i int)
 // }
 type MapFn func(v Item, i int) Item 
 
-//FilterFn type for filter function handle
+//FilterFn filter loop handle
+//
+// func(v Item, i int) (b bool) {
+// 	sv := v.(string)
+// 	return sv == "foo"
+// }
 type FilterFn func(v Item, i int) bool 
 
 //CmpFn type for Equal compare handle
