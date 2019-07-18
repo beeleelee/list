@@ -10,7 +10,11 @@ func cmp(a, b Item) bool {
 }
 
 func TestEach(t *testing.T) {
-	list := List{[]Item{1,3,5,7,9}}
+	list, err := From([]int{1,3,5,7,9})
+	if err != nil {
+		t.Errorf("%v", err)
+		return 
+	}
 	list2 := list.New(0)
 	Each(&list, func(v Item, i int){
 		list2.Append(v)

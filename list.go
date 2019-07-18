@@ -1,5 +1,27 @@
 package list
 
+import (
+	"reflect"
+	"errors"
+)
+
+// #package list
+//
+// ##Example
+// 
+// ```
+// 	package main
+//  import (
+//   	"fmt"
+//		"github.com/beeleelee/list"
+//	)
+//
+//	func main() {
+//		
+//	}
+
+
+
 //Item - generic type for list item 
 type Item interface {}
 
@@ -23,6 +45,26 @@ type FilterFn func(v Item, i int) bool
 
 //CmpFn type for Equal compare handle
 type CmpFn func(a, b Item) bool 
+
+
+
+//From - convert regular slice to List
+func From(source interface{}) (nl List, e error) {
+	rv := reflect.ValueOf(source)
+	if rv.Kind() == reflect.Slice || rv.Kind() == reflect.Array {
+		rvLen := rv.Len()
+		data := make([]Item, rvLen)
+		for i := 0; i < rvLen; i++ {
+			data[i] = rv.Index(i).Interface()
+		}
+		nl = List{data}
+		e = nil
+	}else{
+		e = errors.New("ListFrom only accept slice or array input")
+	}
+
+	return
+} 
 
 // Each - each loop handler
 func Each(list Lister, f EachFn){
