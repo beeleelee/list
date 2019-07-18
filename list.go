@@ -21,6 +21,9 @@ type MapFn func(v Item, i int) Item
 //FilterFn type for filter function handle
 type FilterFn func(v Item, i int) bool 
 
+//CmpFn type for Equal compare handle
+type CmpFn func(a, b Item) bool 
+
 // Each - each loop handler
 func Each(list Lister, f EachFn){
 	l := list.Len()
@@ -49,7 +52,7 @@ func Filter(list Lister, f FilterFn) Lister {
 	return filteredList
 }
 
-func Equal(s Lister, t Lister) (r bool) {
+func Equal(s, t Lister, f CmpFn) (r bool) {
 	sLen := s.Len()
 	tLen := t.Len()
 	r = true 
@@ -58,7 +61,7 @@ func Equal(s Lister, t Lister) (r bool) {
 		return 
 	}
 	for i := 0; i < sLen; i++ {
-		if s.Get(i) != t.Get(i) {
+		if f(s.Get(i), t.Get(i)) {
 			r = false
 			break
 		}
