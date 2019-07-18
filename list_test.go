@@ -5,6 +5,9 @@ import (
 	. "../list"
 )
 
+func cmp(a, b Item) bool {
+	return a == b
+}
 
 func TestEach(t *testing.T) {
 	list := List{[]Item{1,3,5,7,9}}
@@ -12,7 +15,7 @@ func TestEach(t *testing.T) {
 	Each(&list, func(v Item, i int){
 		list2.Append(v)
 	})
-	if !Equal(&list, list2) {
+	if !Equal(&list, list2, cmp) {
 		t.Errorf("seems Each not works")
 	}
 }
@@ -22,7 +25,7 @@ func TestMap(t *testing.T) {
 	newList := Map(&list, func(v Item, i int) Item {
 		return v.(int) * 2
 	})
-	if !Equal(newList, &List{[]Item{2,6,10,14,18}}) {
+	if !Equal(newList, &List{[]Item{2,6,10,14,18}}, cmp) {
 		t.Errorf("before map %v \n after map %v", list, newList)
 	}
 }
@@ -32,7 +35,7 @@ func TestFilter(t *testing.T) {
 	list2 := Filter(&list, func(v Item, i int) bool {
 		return v.(int) % 2 == 0
 	})
-	if !Equal(list2, &List{[]Item{2,4,6}}){
+	if !Equal(list2, &List{[]Item{2,4,6}}, cmp) {
 		t.Errorf("Filter seems not work")
 	}
 }
@@ -51,7 +54,7 @@ func TestEqual(t *testing.T) {
 	a := List{[]Item{'a', 'b', 'c', 'd', 'e'}}
 	b := List{[]Item{'a', 'b', 'c', 'd', 'e'}}
 	
-	if !Equal(&a, &b) {
+	if !Equal(&a, &b, cmp) {
 		t.Errorf("s %v should be equal to t %v, but got not equal", a, b)
 	}
 }

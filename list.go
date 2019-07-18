@@ -61,7 +61,7 @@ func Equal(s, t Lister, f CmpFn) (r bool) {
 		return 
 	}
 	for i := 0; i < sLen; i++ {
-		if f(s.Get(i), t.Get(i)) {
+		if !f(s.Get(i), t.Get(i)) {
 			r = false
 			break
 		}
