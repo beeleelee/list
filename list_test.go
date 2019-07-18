@@ -25,7 +25,7 @@ func TestEach(t *testing.T) {
 }
 
 func TestMap(t *testing.T) {
-	list := List{[]Item{1,3,5,7,9}}
+	list, _ := From([]int{1,3,5,7,9})
 	newList := Map(&list, func(v Item, i int) Item {
 		return v.(int) * 2
 	})
@@ -35,7 +35,7 @@ func TestMap(t *testing.T) {
 }
 
 func TestFilter(t *testing.T) {
-	list := List{[]Item{1,2,3,4,5,6,7}}
+	list, _ := From([]int{1,2,3,4,5,6,7})
 	list2 := Filter(&list, func(v Item, i int) bool {
 		return v.(int) % 2 == 0
 	})
@@ -45,7 +45,7 @@ func TestFilter(t *testing.T) {
 }
 
 func TestFindIndex(t *testing.T) {
-	list := List{[]Item{'a', 'b', 'c', 'd', 'e'}}
+	list, _ := From([]rune{'a', 'b', 'c', 'd', 'e'})
 	index := FindIndex(&list, func(v Item, i int) bool {
 		return v.(rune) == 'e'
 	})
@@ -68,7 +68,7 @@ func TestFind(t *testing.T) {
 		name string
 		age int
 	}
-	list := List{[]Item{User{"alex", 38}, User{"beeleelee", 40}}}
+	list, _ := From([]User{{"alex", 38},{"beeleelee", 40}})
 	item := Find(&list, func(v Item, i int) bool {
 		return v.(User).name == "alex"
 	})
