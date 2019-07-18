@@ -55,12 +55,18 @@ import (
 type Item interface {}
 
 //Lister - interface for list 
+// Len return the size of the list
+// Get return the item in the list by index
+// Set return nil if successfully set item in the list by index, 
+//		return error if failed
+// New return a new empty list
+// Append item to extend the list with 
 type Lister interface {
 	Len() int 
 	Get(i int) Item 
 	Set(i int, v Item) error
 	New(n int) Lister
-	Append(v Item)
+	Append(v ...Item)
 }
 
 //EachFn  type for each function handle 
@@ -195,6 +201,6 @@ func (_ *List) New(n int) Lister {
 	return r
 }
 
-func (l *List) Append(v Item) {
-	l.Data = append(l.Data, v)
+func (l *List) Append(v ...Item) {
+	l.Data = append(l.Data, v...)
 }
