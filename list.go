@@ -69,7 +69,7 @@ type Lister interface {
 	Append(v ...Item)
 }
 
-//EachFn  each loop handle 
+//EachFn  each loop handle signature
 //
 // func(v Item, i int){
 // 	// switch value to the expected type
@@ -78,7 +78,7 @@ type Lister interface {
 // }
 type EachFn func(v Item, i int)
 
-//MapFn  map loop handle
+//MapFn  map loop handle signature
 //
 // func(v Item, i int) (item Item) {
 // 	sv, _ := v.(float64)
@@ -86,7 +86,7 @@ type EachFn func(v Item, i int)
 // }
 type MapFn func(v Item, i int) Item 
 
-//FilterFn filter loop handle
+//FilterFn filter loop handle signature
 //
 // func(v Item, i int) bool {
 // 	sv := v.(string)
@@ -94,7 +94,7 @@ type MapFn func(v Item, i int) Item
 // }
 type FilterFn func(v Item, i int) bool 
 
-//CmpFn compare handle
+//CmpFn compare handle signature
 //
 // func(a, b Item) bool {
 // 	return a == b 
@@ -128,7 +128,10 @@ func From(source interface{}) (nl List, e error) {
 	return
 } 
 
-// Each - each loop handler
+// Each - each loop
+//
+// use for loop to get item from list
+// and feed item to EachFn
 func Each(list Lister, f EachFn){
 	l := list.Len()
 	for i := 0; i < l; i++ {
@@ -136,7 +139,10 @@ func Each(list Lister, f EachFn){
 	}
 }
 
-// Map - map loop handler
+// Map - map loop 
+//
+// use for loop to get item from list
+// and feed item to MapFn
 func Map(list Lister, f MapFn) Lister {
 	l := list.Len()
 	mapedList := list.New(l) 
@@ -146,6 +152,11 @@ func Map(list Lister, f MapFn) Lister {
 	return mapedList
 }
 
+// Filter - filter loop 
+//
+// first create a new list by list.New
+// then use each loop to get item from list
+// and feed item to FilterFn which decide weather keep it or not
 func Filter(list Lister, f FilterFn) Lister {
 	filteredList := list.New(0)
 	Each(list, func(v Item, i int) {
