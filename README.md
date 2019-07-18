@@ -1,7 +1,7 @@
 # list
 Collection manipulation utilities.
 
-##Example
+## Example - basic usage
 
 ```
 package main
