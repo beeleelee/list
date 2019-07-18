@@ -69,10 +69,21 @@ type Lister interface {
 	Append(v ...Item)
 }
 
-//EachFn  type for each function handle 
+//EachFn  each loop handle 
+//
+// func(v Item, i int){
+// 	// switch value to the expected type
+// 	sv, _ := v.(int) // just for example, actually can use any type you specified
+// 	fmt.Println(sv)	
+// }
 type EachFn func(v Item, i int)
 
-//MapFn type for map function handle
+//MapFn  map loop handle
+//
+// func(v Item, i int) (item Item) {
+// 	sv, _ := v.(float64)
+// 	return sv * sv 
+// }
 type MapFn func(v Item, i int) Item 
 
 //FilterFn type for filter function handle
