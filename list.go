@@ -50,13 +50,15 @@ import (
 
 
 //Item - generic type for list item 
+// 
+// in order to accept any type of item in collection
 type Item interface {}
 
 //Lister - interface for list 
 type Lister interface {
 	Len() int 
 	Get(i int) Item 
-	Set(i int, v Item)
+	Set(i int, v Item) error
 	New(n int) Lister
 	Append(v Item)
 }
@@ -176,8 +178,15 @@ func (l *List) Get(i int) Item {
 	return l.Data[i]
 }
 
-func (l *List) Set(i int, v Item) {
+func (l *List) Set(i int, v Item) (e error) {
+	size := l.Len()
+	if i < 0 || i > size - 1 {
+		e = fmt.Errorf("*List Set - the input index: %v is out of range\n", i)
+		return 
+	}
 	l.Data[i] = v 
+	e = nil
+	return 
 }
 
 func (_ *List) New(n int) Lister {
