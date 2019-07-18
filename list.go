@@ -1,8 +1,8 @@
 package list
 
 import (
-	"reflect"
 	"fmt"
+	"reflect"
 )
 
 // #package list
@@ -41,32 +41,30 @@ import (
 // 	intListFiltered := lee.Filter(&intList, func(v lee.Item, i int) bool {
 // 		return v.(int) % 2 == 1
 // 	})
-	
+
 // 	fmt.Println(intListFiltered.Data)
 // 	// &{[1]}
 // }
 // ```
 
-
-
-//Item - generic type for list item 
-// 
+//Item - generic type for list item
+//
 // in order to accept any type of item in collection
-type Item interface {}
+type Item interface{}
 
-//Lister - interface for list 
+//Lister - interface for list
 // Len return the size of the list
 // Get return the item in the list by index
-// Set return nil if successfully set item in the list by index, 
+// Set return nil if successfully set item in the list by index,
 //		return error if failed
 // New return a new empty list
-// Append item to extend the list with 
+// Append item to extend the list with
 type Lister interface {
-	Len() int 
-	Get(i int) Item 
-	Set(i int, v Item) error
-	New(n int) Lister
-	Append(v ...Item)
+	Len() int
+	Get(int) Item
+	Set(int, Item) error
+	New(int) Lister
+	Append(...Item)
 }
 
 //EachFn  each loop handle signature
@@ -74,17 +72,17 @@ type Lister interface {
 // func(v Item, i int){
 // 	// switch value to the expected type
 // 	sv, _ := v.(int) // just for example, actually can use any type you specified
-// 	fmt.Println(sv)	
+// 	fmt.Println(sv)
 // }
-type EachFn func(v Item, i int)
+type EachFn func(Item, int)
 
 //MapFn  map loop handle signature
 //
 // func(v Item, i int) (item Item) {
 // 	sv, _ := v.(float64)
-// 	return sv * sv 
+// 	return sv * sv
 // }
-type MapFn func(v Item, i int) Item 
+type MapFn func(Item, int) Item
 
 //FilterFn filter loop handle signature
 //
@@ -92,16 +90,14 @@ type MapFn func(v Item, i int) Item
 // 	sv := v.(string)
 // 	return sv == "foo"
 // }
-type FilterFn func(v Item, i int) bool 
+type FilterFn func(Item, int) bool
 
 //CmpFn compare handle signature
 //
 // func(a, b Item) bool {
-// 	return a == b 
+// 	return a == b
 // }
-type CmpFn func(a, b Item) bool 
-
-
+type CmpFn func(a, b Item) bool
 
 //From - convert regular slice to List
 //
@@ -121,38 +117,38 @@ func From(source interface{}) (nl List, e error) {
 		}
 		nl = List{data}
 		e = nil
-	}else{
+	} else {
 		e = fmt.Errorf("ListFrom only accept slice or array input, but got %v", rv.Kind())
 	}
 
 	return
-} 
+}
 
 // Each - each loop
 //
 // use for loop to get item from list
 // and feed item to EachFn
-func Each(list Lister, f EachFn){
+func Each(list Lister, f EachFn) {
 	l := list.Len()
 	for i := 0; i < l; i++ {
 		f(list.Get(i), i)
 	}
 }
 
-// Map - map loop 
+// Map - map loop
 //
 // use for loop to get item from list
 // and feed item to MapFn
 func Map(list Lister, f MapFn) Lister {
 	l := list.Len()
-	mapedList := list.New(l) 
+	mapedList := list.New(l)
 	for i := 0; i < l; i++ {
 		mapedList.Set(i, f(list.Get(i), i))
 	}
 	return mapedList
 }
 
-// Filter - filter loop 
+// Filter - filter loop
 //
 // first create a new list by list.New
 // then use each loop to get item from list
@@ -170,10 +166,10 @@ func Filter(list Lister, f FilterFn) Lister {
 func Equal(s, t Lister, f CmpFn) (r bool) {
 	sLen := s.Len()
 	tLen := t.Len()
-	r = true 
+	r = true
 	if sLen != tLen {
 		r = false
-		return 
+		return
 	}
 	for i := 0; i < sLen; i++ {
 		if !f(s.Get(i), t.Get(i)) {
@@ -181,7 +177,7 @@ func Equal(s, t Lister, f CmpFn) (r bool) {
 			break
 		}
 	}
-	return 
+	return
 }
 
 func FindIndex(list Lister, f FilterFn) (index int) {
@@ -198,7 +194,7 @@ func FindIndex(list Lister, f FilterFn) (index int) {
 
 func Find(list Lister, f FilterFn) (r Item) {
 	l := list.Len()
-	r  = nil
+	r = nil
 	for i := 0; i < l; i++ {
 		r = list.Get(i)
 		if f(r, i) {
@@ -208,10 +204,8 @@ func Find(list Lister, f FilterFn) (r Item) {
 	return
 }
 
-
-
 type List struct {
-	Data []Item 
+	Data []Item
 }
 
 func (l *List) Len() int {
@@ -224,13 +218,13 @@ func (l *List) Get(i int) Item {
 
 func (l *List) Set(i int, v Item) (e error) {
 	size := l.Len()
-	if i < 0 || i > size - 1 {
+	if i < 0 || i > size-1 {
 		e = fmt.Errorf("*List Set - the input index: %v is out of range\n", i)
-		return 
+		return
 	}
-	l.Data[i] = v 
+	l.Data[i] = v
 	e = nil
-	return 
+	return
 }
 
 func (_ *List) New(n int) Lister {
