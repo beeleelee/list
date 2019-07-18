@@ -246,7 +246,7 @@ func Find(list Lister, f FilterFn) (r Item, ok bool) {
 	return
 }
 
-func Contain(list Lister, f FilterFn) (r bool) {
+func Contains(list Lister, f FilterFn) (r bool) {
 	fmt.Println(Find(list, f))
 	if _, ok := Find(list, f); ok {
 		r = true

@@ -87,13 +87,13 @@ func TestFind(t *testing.T) {
 	}
 }
 
-func TestContain(t *testing.T) {
+func TestContains(t *testing.T) {
 	type User struct {
 		name string
 		age int
 	}
 	list, _ := From([]User{{"alex", 38},{"beeleelee", 40}})
-	hasFoo := Contain(&list, func(v Item, i int) bool {
+	hasFoo := Contains(&list, func(v Item, i int) bool {
 		return v.(User).name == "foo"
 	})
 	
