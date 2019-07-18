@@ -104,6 +104,13 @@ type CmpFn func(a, b Item) bool
 
 
 //From - convert regular slice to List
+//
+//	as do not know the item type in the slic
+// 	so use reflect package to get the item type
+//	and rebuild a new slice with Item type
+//
+//	call it like this:
+// 	list.From([]int{1,2,3})
 func From(source interface{}) (nl List, e error) {
 	rv := reflect.ValueOf(source)
 	if rv.Kind() == reflect.Slice || rv.Kind() == reflect.Array {
