@@ -186,7 +186,8 @@ func From(source interface{}) (nl List, e error) {
 func Each(list Lister, f EachFn) {
 	l := list.Len()
 	for i := 0; i < l; i++ {
-		f(list.Get(i), i)
+		item, _ := list.Get(i)
+		f(item, i)
 	}
 }
 
@@ -198,7 +199,8 @@ func Map(list Lister, f MapFn) Lister {
 	l := list.Len()
 	mapedList := list.New(l)
 	for i := 0; i < l; i++ {
-		mapedList.Set(i, f(list.Get(i), i))
+		item, _ := list.Get(i)
+		mapedList.Set(i, f(item, i))
 	}
 	return mapedList
 }
@@ -226,8 +228,11 @@ func Equal(s, t Lister, f CmpFn) (r bool) {
 		r = false
 		return
 	}
+	var sItem, tItem Item
 	for i := 0; i < sLen; i++ {
-		if !f(s.Get(i), t.Get(i)) {
+		sItem, _ = s.Get(i)
+		tItem, _ = t.Get(i)
+		if !f(sItem, tItem) {
 			r = false
 			break
 		}
@@ -239,7 +244,8 @@ func FindIndex(list Lister, f FilterFn) (index int) {
 	l := list.Len()
 	index = -1
 	for i := 0; i < l; i++ {
-		if f(list.Get(i), i) {
+		item, _ := list.Get(i)
+		if f(item, i) {
 			index = i
 			break
 		}
@@ -251,7 +257,7 @@ func Find(list Lister, f FilterFn) (r Item, ok bool) {
 	l := list.Len()
 	var item Item
 	for i := 0; i < l; i++ {
-		item = list.Get(i)
+		item, _ = list.Get(i)
 		ok = false
 		if f(item, i) {
 			r = item
