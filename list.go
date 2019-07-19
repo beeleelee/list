@@ -220,6 +220,9 @@ func Filter(list Lister, f FilterFn) Lister {
 	return filteredList
 }
 
+// Equal - a way to compare whether two list is equal
+//
+// it accept a CmpFn which handle the equal logic
 func Equal(s, t Lister, f CmpFn) (r bool) {
 	sLen := s.Len()
 	tLen := t.Len()
@@ -240,6 +243,10 @@ func Equal(s, t Lister, f CmpFn) (r bool) {
 	return
 }
 
+// FindIndex - a way to find the index of a specific item
+//
+//	it return -1 if could not find the item
+//	it accept a FilterFn which will specific the item
 func FindIndex(list Lister, f FilterFn) (index int) {
 	l := list.Len()
 	index = -1
@@ -253,6 +260,9 @@ func FindIndex(list Lister, f FilterFn) (index int) {
 	return
 }
 
+// Find - like FindIndex, but not return index of item
+//
+// it returns the specific item and ok flag
 func Find(list Lister, f FilterFn) (r Item, ok bool) {
 	l := list.Len()
 	var item Item
@@ -268,6 +278,10 @@ func Find(list Lister, f FilterFn) (r Item, ok bool) {
 	return
 }
 
+// Contains - like Find
+//
+// return true if find the item
+// return false if can not find the item
 func Contains(list Lister, f FilterFn) (r bool) {
 	fmt.Println(Find(list, f))
 	if _, ok := Find(list, f); ok {
