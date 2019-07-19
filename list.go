@@ -69,22 +69,36 @@ type Item interface{}
 // Append item to extend the list with
 type Lister interface {
 	Len() int
-	Get(int) Item
+	Get(int) (Item, error)
 	Set(int, Item) error
 	New(int) Lister
 	Append(...Item)
 }
 
+// List a struct wrap collection in Data field
+//
+// why use struct, can I use slice, like []Item ?
+// actually I use []Item at first time, but then
+// went into trouble when implement Append method
 type List struct {
 	Data []Item
 }
 
+// Len return the length of the collection
 func (l *List) Len() int {
 	return len(l.Data)
 }
 
-func (l *List) Get(i int) Item {
-	return l.Data[i]
+// Get return item in the collection by
+func (l *List) Get(i int) (item Item, e error) {
+	length := l.Len()
+	if i >= length {
+		e = fmt.Errorf("List.Get index: %v is out of range", i)
+		return
+	}
+	item = l.Data[i]
+	e = nil
+	return
 }
 
 func (l *List) Set(i int, v Item) (e error) {
