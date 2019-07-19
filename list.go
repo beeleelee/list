@@ -131,6 +131,34 @@ func (l *List) Append(v ...Item) {
 	l.Data = append(l.Data, v...)
 }
 
+func (l *List) Each(f EachFn) {
+	Each(l, f)
+}
+
+func (l *List) Map(f MapFn) Lister {
+	return Map(l, f)
+}
+
+func (l *List) Filter(f FilterFn) Lister {
+	return Filter(l, f)
+}
+
+func (l *List) Equal(t Lister, f CmpFn) bool {
+	return Equal(l, t, f)
+}
+
+func (l *List) FindIndex(f FilterFn) int {
+	return FindIndex(l, f)
+}
+
+func (l *List) Find(f FilterFn) (Item, bool) {
+	return Find(l, f)
+}
+
+func (l *List) Contains(f FilterFn) bool {
+	return Contains(l, f)
+}
+
 //EachFn  each loop handle signature
 //
 // func(v Item, i int){
