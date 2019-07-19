@@ -1,8 +1,10 @@
 # list
 
-list provide some useful utilities for manipulate collection
+list provide some useful utilities 
 
-in the form of functional programming inspired by underscore.js
+in order to manipulate collection conveniently
+
+in the form of functional programming 
 
 hope, it will be helpful
 
