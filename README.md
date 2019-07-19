@@ -21,7 +21,7 @@ import (
 func main() {
 	intList, _ := lee.From([]int{0,1,2})
 	// list.Each
-	lee.Each(&intList, func(v lee.Item, i int){
+	lee.Each(intList, func(v lee.Item, i int){
 		fmt.Println(v, i)
 	})
 	/*
@@ -31,7 +31,7 @@ func main() {
 	 */
 
 	// list.Map
-	intListMapped := lee.Map(&intList, func(v lee.Item, i int) lee.Item {
+	intListMapped := lee.Map(intList, func(v lee.Item, i int) lee.Item {
 		return v.(int) * 2
 	})
 
@@ -39,7 +39,7 @@ func main() {
 	// &{[0 2 4]}
 
 	// list.Filter
-	intListFiltered := lee.Filter(&intList, func(v lee.Item, i int) bool {
+	intListFiltered := lee.Filter(intList, func(v lee.Item, i int) bool {
 		return v.(int) % 2 == 1
 	})
 	

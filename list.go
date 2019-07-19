@@ -28,7 +28,7 @@ import (
 // func main() {
 // 	intList, _ := lee.From([]int{0,1,2})
 // 	// list.Each
-// 	lee.Each(&intList, func(v lee.Item, i int){
+// 	lee.Each(intList, func(v lee.Item, i int){
 // 		fmt.Println(v, i)
 // 	})
 // 	/*
@@ -38,7 +38,7 @@ import (
 // 	 */
 
 // 	// list.Map
-// 	intListMapped := lee.Map(&intList, func(v lee.Item, i int) lee.Item {
+// 	intListMapped := lee.Map(intList, func(v lee.Item, i int) lee.Item {
 // 		return v.(int) * 2
 // 	})
 
@@ -46,7 +46,7 @@ import (
 // 	// &{[0 2 4]}
 
 // 	// list.Filter
-// 	intListFiltered := lee.Filter(&intList, func(v lee.Item, i int) bool {
+// 	intListFiltered := lee.Filter(intList, func(v lee.Item, i int) bool {
 // 		return v.(int) % 2 == 1
 // 	})
 
@@ -159,6 +159,10 @@ func (l *List) Contains(f FilterFn) bool {
 	return Contains(l, f)
 }
 
+func (l *List) Reduce(f ReduceFn, a Item) Item {
+	return Reduce(l, f, a)
+}
+
 //EachFn  each loop handle signature
 //
 // func(v Item, i int){
@@ -191,6 +195,8 @@ type FilterFn func(Item, int) bool
 // }
 type CmpFn func(a, b Item) bool
 
+type ReduceFn func(a, b Item) Item
+
 //From - convert regular slice to List
 //
 //	as do not know the item type in the slic
@@ -199,7 +205,7 @@ type CmpFn func(a, b Item) bool
 //
 //	call it like this:
 // 	list.From([]int{1,2,3})
-func From(source interface{}) (nl List, e error) {
+func From(source interface{}) (nl *List, e error) {
 	rv := reflect.ValueOf(source)
 	if rv.Kind() == reflect.Slice || rv.Kind() == reflect.Array {
 		rvLen := rv.Len()
@@ -207,7 +213,7 @@ func From(source interface{}) (nl List, e error) {
 		for i := 0; i < rvLen; i++ {
 			data[i] = rv.Index(i).Interface()
 		}
-		nl = List{data}
+		nl = &List{data}
 		e = nil
 	} else {
 		e = fmt.Errorf("ListFrom only accept slice or array input, but got %v", rv.Kind())
@@ -326,5 +332,19 @@ func Contains(list Lister, f FilterFn) (r bool) {
 	} else {
 		r = false
 	}
+	return
+}
+
+func Reduce(list Lister, f ReduceFn, a Item) (r Item) {
+	l, i := list.Len(), 0
+	if a == nil { // use first item to start if not pass a start value
+		a, _ = list.Get(i)
+		i++
+	}
+	for ; i < l; i++ {
+		item, _ := list.Get(i)
+		a = f(a, item)
+	}
+	r = a
 	return
 }

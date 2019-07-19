@@ -17,17 +17,17 @@ func TestEach(t *testing.T) {
 		return 
 	}
 	list2 := list.New(0)
-	Each(&list, func(v Item, i int){
+	Each(list, func(v Item, i int){
 		list2.Append(v)
 	})
-	if !Equal(&list, list2, cmp) {
+	if !Equal(list, list2, cmp) {
 		t.Errorf("seems Each not works")
 	}
 }
 
 func TestMap(t *testing.T) {
 	list, _ := From([]int{1,3,5,7,9})
-	newList := Map(&list, func(v Item, i int) Item {
+	newList := Map(list, func(v Item, i int) Item {
 		return v.(int) * 2
 	})
 	if !Equal(newList, &List{[]Item{2,6,10,14,18}}, cmp) {
@@ -37,7 +37,7 @@ func TestMap(t *testing.T) {
 
 func TestFilter(t *testing.T) {
 	list, _ := From([]int{1,2,3,4,5,6,7})
-	list2 := Filter(&list, func(v Item, i int) bool {
+	list2 := Filter(list, func(v Item, i int) bool {
 		return v.(int) % 2 == 0
 	})
 	if !Equal(list2, &List{[]Item{2,4,6}}, cmp) {
@@ -47,7 +47,7 @@ func TestFilter(t *testing.T) {
 
 func TestFindIndex(t *testing.T) {
 	list, _ := From([]rune{'a', 'b', 'c', 'd', 'e'})
-	index := FindIndex(&list, func(v Item, i int) bool {
+	index := FindIndex(list, func(v Item, i int) bool {
 		return v.(rune) == 'e'
 	})
 	if index != 4 {
@@ -72,7 +72,7 @@ func TestFind(t *testing.T) {
 	userAlex := User{"alex", 38}
 	userBeeleelee := User{"beeleelee", 40}
 	list, _ := From([]User{userAlex,userBeeleelee})
-	item, ok := Find(&list, func(v Item, i int) bool {
+	item, ok := Find(list, func(v Item, i int) bool {
 		return v.(User).name == "alex"
 	})
 	
@@ -93,11 +93,27 @@ func TestContains(t *testing.T) {
 		age int
 	}
 	list, _ := From([]User{{"alex", 38},{"beeleelee", 40}})
-	hasFoo := Contains(&list, func(v Item, i int) bool {
+	hasFoo := Contains(list, func(v Item, i int) bool {
 		return v.(User).name == "foo"
 	})
 	
 	if hasFoo {
 		t.Errorf("seems Contain not work")
+	}
+}
+
+func TestReduce(t *testing.T) {
+	intList, _ := From([]int{0,1,2,3,4,5})
+	total := Reduce(intList, func(a, b Item) Item {
+		return a.(int) + b.(int)
+	}, nil)
+	if total.(int) != 15 {
+		t.Errorf("Reduce not work, expect total to be 15 but got %v", total)
+	}
+	sum20 := intList.Reduce(func(a, b Item) Item {
+		return a.(int) + b.(int)
+	}, 20)
+	if sum20 != 35 {
+		t.Errorf("Reduce not work, expect sum20 to be 35 but got %v", sum20)
 	}
 }
