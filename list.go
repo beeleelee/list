@@ -89,7 +89,10 @@ func (l *List) Len() int {
 	return len(l.Data)
 }
 
-// Get return item in the collection by
+// Get return the item in the collection by index
+//
+// if index in range, e will be nil
+// out of range, e will has an error message
 func (l *List) Get(i int) (item Item, e error) {
 	length := l.Len()
 	if i >= length {
@@ -101,6 +104,10 @@ func (l *List) Get(i int) (item Item, e error) {
 	return
 }
 
+// Set - modify the collection
+//
+// e will be nil if successfully set item
+// e will has an message when index out of range
 func (l *List) Set(i int, v Item) (e error) {
 	size := l.Len()
 	if i < 0 || i > size-1 {
@@ -112,12 +119,14 @@ func (l *List) Set(i int, v Item) (e error) {
 	return
 }
 
-func (_ *List) New(n int) Lister {
+// New - return an empty collection
+func (*List) New(n int) Lister {
 	r := new(List)
 	r.Data = make([]Item, n)
 	return r
 }
 
+// Append - extend the collection
 func (l *List) Append(v ...Item) {
 	l.Data = append(l.Data, v...)
 }
