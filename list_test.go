@@ -65,28 +65,28 @@ func TestEqual(t *testing.T) {
 	}
 }
 
-// func TestFind(t *testing.T) {
-// 	type User struct {
-// 		name string
-// 		age int
-// 	}
-// 	userAlex := User{"alex", 38}
-// 	userBeeleelee := User{"beeleelee", 40}
-// 	list, _ := From([]User{userAlex,userBeeleelee})
-// 	item, ok := Find(list, func(v Item, i int) bool {
-// 		return v.(User).name == "alex"
-// 	})
+func TestFind(t *testing.T) {
+	type User struct {
+		name string
+		age int
+	}
+	userAlex := User{"alex", 38}
+	userBeeleelee := User{"beeleelee", 40}
+	list, _ := From([]User{userAlex,userBeeleelee})
+	item, ok := Find(list, func(v Item, i int) bool {
+		return v.(User).name == "alex"
+	})
 	
-// 	if userAlex == item {
-// 		fmt.Printf("%v equals %v, %v", item, userAlex, ok)
-// 	}else{
-// 		fmt.Printf("%v not equals %v, %v", userAlex, item, ok)
-// 	}
+	if userAlex == item {
+		fmt.Printf("%v equals %v, %v", item, userAlex, ok)
+	}else{
+		fmt.Printf("%v not equals %v, %v", userAlex, item, ok)
+	}
 	
-// 	if !ok {
-// 		t.Errorf("seems Find not work")
-// 	}
-// }
+	if !ok {
+		t.Errorf("seems Find not work")
+	}
+}
 
 // func TestContains(t *testing.T) {
 // 	type User struct {
