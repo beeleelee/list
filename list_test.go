@@ -23,7 +23,6 @@ func TestEach(t *testing.T) {
 	if !Equal(list, list2, cmp) {
 		t.Errorf("seems Each not works")
 	}
-	fmt.Println("...")
 }
 
 func TestMap(t *testing.T) {

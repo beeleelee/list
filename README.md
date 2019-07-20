@@ -21,9 +21,13 @@ import (
 func main() {
 	intList, _ := lee.From([]int{0,1,2})
 	// list.Each
-	lee.Each(intList, func(v lee.Item, i int){
+	intList.Each(func(v lee.Item, i int){
 		fmt.Println(v, i)
 	})
+	// lee.Each(intList, func(v lee.Item, i int){
+	// 	fmt.Println(v, i)
+	// })
+
 	/*
 	 *	0 0
 	 *	1 1
@@ -31,20 +35,27 @@ func main() {
 	 */
 
 	// list.Map
-	intListMapped := lee.Map(intList, func(v lee.Item, i int) lee.Item {
+	intListMapped := intList.Map(func(v lee.Item, i int) lee.Item {
 		return v.(int) * 2
 	})
+	// intListMapped := lee.Map(intList, func(v lee.Item, i int) lee.Item {
+	// 	return v.(int) * 2
+	// })
 
-	fmt.Println(intListMapped.Data)
-	// &{[0 2 4]}
+	fmt.Println(intListMapped)
+	// [0 2 4]
 
 	// list.Filter
-	intListFiltered := lee.Filter(intList, func(v lee.Item, i int) bool {
+	intListFiltered := intList.Filter(func(v lee.Item, i int) bool {
 		return v.(int) % 2 == 1
 	})
-	
-	fmt.Println(intListFiltered.Data)
-	// &{[1]}
+
+	// intListFiltered := lee.Filter(intList, func(v lee.Item, i int) bool {
+	// 	return v.(int) % 2 == 1
+	// })
+
+	fmt.Println(intListFiltered)
+	// [1]
 }
 ```
 

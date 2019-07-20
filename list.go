@@ -28,9 +28,13 @@ import (
 // func main() {
 // 	intList, _ := lee.From([]int{0,1,2})
 // 	// list.Each
-// 	lee.Each(intList, func(v lee.Item, i int){
+// 	intList.Each(func(v lee.Item, i int){
 // 		fmt.Println(v, i)
 // 	})
+// 	// lee.Each(intList, func(v lee.Item, i int){
+// 	// 	fmt.Println(v, i)
+// 	// })
+
 // 	/*
 // 	 *	0 0
 // 	 *	1 1
@@ -38,20 +42,27 @@ import (
 // 	 */
 
 // 	// list.Map
-// 	intListMapped := lee.Map(intList, func(v lee.Item, i int) lee.Item {
+// 	intListMapped := intList.Map(func(v lee.Item, i int) lee.Item {
 // 		return v.(int) * 2
 // 	})
+// 	// intListMapped := lee.Map(intList, func(v lee.Item, i int) lee.Item {
+// 	// 	return v.(int) * 2
+// 	// })
 
-// 	fmt.Println(intListMapped.Data)
-// 	// &{[0 2 4]}
+// 	fmt.Println(intListMapped)
+// 	// [0 2 4]
 
 // 	// list.Filter
-// 	intListFiltered := lee.Filter(intList, func(v lee.Item, i int) bool {
+// 	intListFiltered := intList.Filter(func(v lee.Item, i int) bool {
 // 		return v.(int) % 2 == 1
 // 	})
 
-// 	fmt.Println(intListFiltered.Data)
-// 	// &{[1]}
+// 	// intListFiltered := lee.Filter(intList, func(v lee.Item, i int) bool {
+// 	// 	return v.(int) % 2 == 1
+// 	// })
+
+// 	fmt.Println(intListFiltered)
+// 	// [1]
 // }
 // ```
 
@@ -96,37 +107,39 @@ type FilterFn func(Item, int) bool
 // }
 type CmpFn func(a, b Item) bool
 
+// ReduceFn reduce handle signature
 type ReduceFn func(a, b Item) Item
 
+// Each convenience wrapper for Each function
 func (l List) Each(f EachFn) List {
 	Each(l, f)
 	return l 
 }
-
+// Map convenience wrapper for Map function
 func (l List) Map(f MapFn) List {
 	return Map(l, f)
 }
-
+// Filter convenience wrapper for Filter function
 func (l List) Filter(f FilterFn) List {
 	return Filter(l, f)
 }
-
+// Equal convenience wrapper for Equal function
 func (l List) Equal(t List, f CmpFn) bool {
 	return Equal(l, t, f)
 }
-
+// FindIndex convenience wrapper for FindIndex function
 func (l List) FindIndex(f FilterFn) int {
 	return FindIndex(l, f)
 }
-
+// Find convenience wrapper for Find function
 func (l List) Find(f FilterFn) (Item, bool) {
 	return Find(l, f)
 }
-
+// Contains convenience wrapper for Contains function
 func (l List) Contains(f FilterFn) bool {
 	return Contains(l, f)
 }
-
+// Reduce convenience wrapper for Reduce function
 func (l List) Reduce(f ReduceFn, a Item) Item {
 	return Reduce(l, f, a)
 }
@@ -157,6 +170,7 @@ func From(source interface{}) (nl List, e error) {
 	return
 }
 
+// New generate a new List instance
 func New(length int) List {
 	return make([]Item, length)
 }
@@ -186,7 +200,7 @@ func Map(list List, f MapFn) List {
 
 // Filter - filter loop
 //
-// first create a new list by list.New
+// first create a new list 
 // then use each loop to get item from list
 // and feed item to FilterFn which decide weather keep it or not
 func Filter(list List, f FilterFn) List {
@@ -269,6 +283,7 @@ func Contains(list List, f FilterFn) (r bool) {
 	return
 }
 
+// Reduce - fold the list
 func Reduce(list List, f ReduceFn, a Item) (r Item) {
 	l, i := len(list), 0
 	if a == nil { // use first item to start if not pass a start value
