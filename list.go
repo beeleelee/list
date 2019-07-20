@@ -170,6 +170,14 @@ func From(source interface{}) (nl List, e error) {
 	return
 }
 
+func FromInts(source []int) (nl List) {
+	nl = New(len(source))
+	for i, v := range source {
+		nl[i] = v
+	}
+	return
+}
+
 // New generate a new List instance
 func New(length int) List {
 	return make([]Item, length)

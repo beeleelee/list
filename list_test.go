@@ -26,7 +26,7 @@ func TestEach(t *testing.T) {
 }
 
 func TestMap(t *testing.T) {
-	list, _ := From([]int{1,3,5,7,9})
+	list := FromInts([]int{1,3,5,7,9})
 	newList := list.Map(func(v Item, i int) Item {
 		return v.(int) * 2
 	})
