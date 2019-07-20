@@ -56,14 +56,14 @@ func TestFindIndex(t *testing.T) {
 	}
 }
 
-// func TestEqual(t *testing.T) {
-// 	a := List{[]Item{'a', 'b', 'c', 'd', 'e'}}
-// 	b := List{[]Item{'a', 'b', 'c', 'd', 'e'}}
+func TestEqual(t *testing.T) {
+	a := []Item{'a', 'b', 'c', 'd', 'e'}
+	b := []Item{'a', 'b', 'c', 'd', 'e'}
 	
-// 	if !Equal(&a, &b, cmp) {
-// 		t.Errorf("s %v should be equal to t %v, but got not equal", a, b)
-// 	}
-// }
+	if !Equal(a, b, cmp) {
+		t.Errorf("s %v should be equal to t %v, but got not equal", a, b)
+	}
+}
 
 // func TestFind(t *testing.T) {
 // 	type User struct {
