@@ -103,18 +103,18 @@ func TestContains(t *testing.T) {
 	}
 }
 
-// func TestReduce(t *testing.T) {
-// 	intList, _ := From([]int{0,1,2,3,4,5})
-// 	total := Reduce(intList, func(a, b Item) Item {
-// 		return a.(int) + b.(int)
-// 	}, nil)
-// 	if total.(int) != 15 {
-// 		t.Errorf("Reduce not work, expect total to be 15 but got %v", total)
-// 	}
-// 	sum20 := intList.Reduce(func(a, b Item) Item {
-// 		return a.(int) + b.(int)
-// 	}, 20)
-// 	if sum20 != 35 {
-// 		t.Errorf("Reduce not work, expect sum20 to be 35 but got %v", sum20)
-// 	}
-// }
+func TestReduce(t *testing.T) {
+	intList, _ := From([]int{0,1,2,3,4,5})
+	total := Reduce(intList, func(a, b Item) Item {
+		return a.(int) + b.(int)
+	}, nil)
+	if total.(int) != 15 {
+		t.Errorf("Reduce not work, expect total to be 15 but got %v", total)
+	}
+	sum20 := intList.Reduce(func(a, b Item) Item {
+		return a.(int) + b.(int)
+	}, 20)
+	if sum20 != 35 {
+		t.Errorf("Reduce not work, expect sum20 to be 35 but got %v", sum20)
+	}
+}
