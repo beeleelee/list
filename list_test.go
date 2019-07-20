@@ -23,18 +23,18 @@ func TestEach(t *testing.T) {
 	if !Equal(list, list2, cmp) {
 		t.Errorf("seems Each not works")
 	}
-	//fmt.Println("...")
+	fmt.Println("...")
 }
 
-// func TestMap(t *testing.T) {
-// 	list, _ := From([]int{1,3,5,7,9})
-// 	newList := Map(list, func(v Item, i int) Item {
-// 		return v.(int) * 2
-// 	})
-// 	if !Equal(newList, &List{[]Item{2,6,10,14,18}}, cmp) {
-// 		t.Errorf("before map %v \n after map %v", list, newList)
-// 	}
-// }
+func TestMap(t *testing.T) {
+	list, _ := From([]int{1,3,5,7,9})
+	newList := list.Map(func(v Item, i int) Item {
+		return v.(int) * 2
+	})
+	if !Equal(newList, []Item{2,6,10,14,18}, cmp) {
+		t.Errorf("before map %v \n after map %v", list, newList)
+	}
+}
 
 // func TestFilter(t *testing.T) {
 // 	list, _ := From([]int{1,2,3,4,5,6,7})

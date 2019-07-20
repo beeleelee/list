@@ -179,7 +179,7 @@ func Map(list List, f MapFn) List {
 	l := len(list)
 	mapedList := make([]Item, l)
 	for i, v := range list {
-		mapedList[i] = v 
+		mapedList[i] = f(v, i)
 	}
 	return mapedList
 }
