@@ -60,108 +60,9 @@ import (
 // in order to accept any type of item in collection
 type Item interface{}
 
-//Lister - interface for list
-// Len return the size of the list
-// Get return the item in the list by index
-// Set return nil if successfully set item in the list by index,
-//		return error if failed
-// New return a new empty list
-// Append item to extend the list with
-type Lister interface {
-	Len() int
-	Get(int) (Item, error)
-	Set(int, Item) error
-	New(int) Lister
-	Append(...Item)
-}
-
 // List a struct wrap collection in Data field
 //
-// why use struct, can I use slice, like []Item ?
-// actually I use []Item at first time, but then
-// went into trouble when implement Append method
-type List struct {
-	Data []Item
-}
-
-// Len return the length of the collection
-func (l *List) Len() int {
-	return len(l.Data)
-}
-
-// Get return the item in the collection by index
-//
-// if index in range, e will be nil
-// out of range, e will has an error message
-func (l *List) Get(i int) (item Item, e error) {
-	length := l.Len()
-	if i >= length {
-		e = fmt.Errorf("List.Get index: %v is out of range", i)
-		return
-	}
-	item = l.Data[i]
-	e = nil
-	return
-}
-
-// Set - modify the collection
-//
-// e will be nil if successfully set item
-// e will has an message when index out of range
-func (l *List) Set(i int, v Item) (e error) {
-	size := l.Len()
-	if i < 0 || i > size-1 {
-		e = fmt.Errorf("the input index: %v is out of range", i)
-		return
-	}
-	l.Data[i] = v
-	e = nil
-	return
-}
-
-// New - return an empty collection
-func (*List) New(n int) Lister {
-	r := new(List)
-	r.Data = make([]Item, n)
-	return r
-}
-
-// Append - extend the collection
-func (l *List) Append(v ...Item) {
-	l.Data = append(l.Data, v...)
-}
-
-func (l *List) Each(f EachFn) {
-	Each(l, f)
-}
-
-func (l *List) Map(f MapFn) Lister {
-	return Map(l, f)
-}
-
-func (l *List) Filter(f FilterFn) Lister {
-	return Filter(l, f)
-}
-
-func (l *List) Equal(t Lister, f CmpFn) bool {
-	return Equal(l, t, f)
-}
-
-func (l *List) FindIndex(f FilterFn) int {
-	return FindIndex(l, f)
-}
-
-func (l *List) Find(f FilterFn) (Item, bool) {
-	return Find(l, f)
-}
-
-func (l *List) Contains(f FilterFn) bool {
-	return Contains(l, f)
-}
-
-func (l *List) Reduce(f ReduceFn, a Item) Item {
-	return Reduce(l, f, a)
-}
+type List []Item
 
 //EachFn  each loop handle signature
 //
@@ -197,6 +98,41 @@ type CmpFn func(a, b Item) bool
 
 type ReduceFn func(a, b Item) Item
 
+func (l List) Each(f EachFn) List {
+	Each(l, f)
+	return l 
+}
+
+func (l *List) Map(f MapFn) Lister {
+	return Map(l, f)
+}
+
+func (l *List) Filter(f FilterFn) Lister {
+	return Filter(l, f)
+}
+
+func (l *List) Equal(t Lister, f CmpFn) bool {
+	return Equal(l, t, f)
+}
+
+func (l *List) FindIndex(f FilterFn) int {
+	return FindIndex(l, f)
+}
+
+func (l *List) Find(f FilterFn) (Item, bool) {
+	return Find(l, f)
+}
+
+func (l *List) Contains(f FilterFn) bool {
+	return Contains(l, f)
+}
+
+func (l *List) Reduce(f ReduceFn, a Item) Item {
+	return Reduce(l, f, a)
+}
+
+
+
 //From - convert regular slice to List
 //
 //	as do not know the item type in the slic
@@ -226,11 +162,9 @@ func From(source interface{}) (nl *List, e error) {
 //
 // use for loop to get item from list
 // and feed item to EachFn
-func Each(list Lister, f EachFn) {
-	l := list.Len()
-	for i := 0; i < l; i++ {
-		item, _ := list.Get(i)
-		f(item, i)
+func Each(list List, f EachFn) {
+	for i, v := range list {
+		f(v, i)
 	}
 }
 
@@ -238,12 +172,11 @@ func Each(list Lister, f EachFn) {
 //
 // use for loop to get item from list
 // and feed item to MapFn
-func Map(list Lister, f MapFn) Lister {
-	l := list.Len()
-	mapedList := list.New(l)
-	for i := 0; i < l; i++ {
-		item, _ := list.Get(i)
-		mapedList.Set(i, f(item, i))
+func Map(list List, f MapFn) List {
+	l := len(list)
+	mapedList := make([]Item, l)
+	for i, v := range list {
+		mapedList[i] = v 
 	}
 	return mapedList
 }
@@ -253,11 +186,11 @@ func Map(list Lister, f MapFn) Lister {
 // first create a new list by list.New
 // then use each loop to get item from list
 // and feed item to FilterFn which decide weather keep it or not
-func Filter(list Lister, f FilterFn) Lister {
-	filteredList := list.New(0)
+func Filter(list List, f FilterFn) List {
+	filteredList := make([]Item)
 	Each(list, func(v Item, i int) {
 		if f(v, i) {
-			filteredList.Append(v)
+			filteredList = append(filteredList, v)
 		}
 	})
 	return filteredList
@@ -266,9 +199,9 @@ func Filter(list Lister, f FilterFn) Lister {
 // Equal - a way to compare whether two list is equal
 //
 // it accept a CmpFn which handle the equal logic
-func Equal(s, t Lister, f CmpFn) (r bool) {
-	sLen := s.Len()
-	tLen := t.Len()
+func Equal(s, t List, f CmpFn) (r bool) {
+	sLen := len(s)
+	tLen := len(t)
 	r = true
 	if sLen != tLen {
 		r = false
@@ -276,8 +209,8 @@ func Equal(s, t Lister, f CmpFn) (r bool) {
 	}
 	var sItem, tItem Item
 	for i := 0; i < sLen; i++ {
-		sItem, _ = s.Get(i)
-		tItem, _ = t.Get(i)
+		sItem = s[i]
+		tItem = t[i]
 		if !f(sItem, tItem) {
 			r = false
 			break
@@ -290,12 +223,11 @@ func Equal(s, t Lister, f CmpFn) (r bool) {
 //
 //	it return -1 if could not find the item
 //	it accept a FilterFn which will specific the item
-func FindIndex(list Lister, f FilterFn) (index int) {
-	l := list.Len()
+func FindIndex(list List, f FilterFn) (index int) {
+	l := len(list)
 	index = -1
 	for i := 0; i < l; i++ {
-		item, _ := list.Get(i)
-		if f(item, i) {
+		if f(list[i], i) {
 			index = i
 			break
 		}
@@ -306,11 +238,11 @@ func FindIndex(list Lister, f FilterFn) (index int) {
 // Find - like FindIndex, but not return index of item
 //
 // it returns the specific item and ok flag
-func Find(list Lister, f FilterFn) (r Item, ok bool) {
+func Find(list List, f FilterFn) (r Item, ok bool) {
 	l := list.Len()
 	var item Item
 	for i := 0; i < l; i++ {
-		item, _ = list.Get(i)
+		item = list[i]
 		ok = false
 		if f(item, i) {
 			r = item
@@ -325,8 +257,7 @@ func Find(list Lister, f FilterFn) (r Item, ok bool) {
 //
 // return true if find the item
 // return false if can not find the item
-func Contains(list Lister, f FilterFn) (r bool) {
-	fmt.Println(Find(list, f))
+func Contains(list List, f FilterFn) (r bool) {
 	if _, ok := Find(list, f); ok {
 		r = true
 	} else {
@@ -335,15 +266,14 @@ func Contains(list Lister, f FilterFn) (r bool) {
 	return
 }
 
-func Reduce(list Lister, f ReduceFn, a Item) (r Item) {
-	l, i := list.Len(), 0
+func Reduce(list List, f ReduceFn, a Item) (r Item) {
+	l, i := len(list), 0
 	if a == nil { // use first item to start if not pass a start value
-		a, _ = list.Get(i)
+		a = list[i]
 		i++
 	}
 	for ; i < l; i++ {
-		item, _ := list.Get(i)
-		a = f(a, item)
+		a = f(a, list[i])
 	}
 	r = a
 	return
