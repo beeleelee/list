@@ -88,20 +88,20 @@ func TestFind(t *testing.T) {
 	}
 }
 
-// func TestContains(t *testing.T) {
-// 	type User struct {
-// 		name string
-// 		age int
-// 	}
-// 	list, _ := From([]User{{"alex", 38},{"beeleelee", 40}})
-// 	hasFoo := Contains(list, func(v Item, i int) bool {
-// 		return v.(User).name == "foo"
-// 	})
+func TestContains(t *testing.T) {
+	type User struct {
+		name string
+		age int
+	}
+	list, _ := From([]User{{"alex", 38},{"beeleelee", 40}})
+	hasFoo := Contains(list, func(v Item, i int) bool {
+		return v.(User).name == "foo"
+	})
 	
-// 	if hasFoo {
-// 		t.Errorf("seems Contain not work")
-// 	}
-// }
+	if hasFoo {
+		t.Errorf("seems Contain not work")
+	}
+}
 
 // func TestReduce(t *testing.T) {
 // 	intList, _ := From([]int{0,1,2,3,4,5})
