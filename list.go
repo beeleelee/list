@@ -103,31 +103,31 @@ func (l List) Each(f EachFn) List {
 	return l 
 }
 
-func (l *List) Map(f MapFn) Lister {
+func (l List) Map(f MapFn) List {
 	return Map(l, f)
 }
 
-func (l *List) Filter(f FilterFn) Lister {
+func (l List) Filter(f FilterFn) List {
 	return Filter(l, f)
 }
 
-func (l *List) Equal(t Lister, f CmpFn) bool {
+func (l List) Equal(t List, f CmpFn) bool {
 	return Equal(l, t, f)
 }
 
-func (l *List) FindIndex(f FilterFn) int {
+func (l List) FindIndex(f FilterFn) int {
 	return FindIndex(l, f)
 }
 
-func (l *List) Find(f FilterFn) (Item, bool) {
+func (l List) Find(f FilterFn) (Item, bool) {
 	return Find(l, f)
 }
 
-func (l *List) Contains(f FilterFn) bool {
+func (l List) Contains(f FilterFn) bool {
 	return Contains(l, f)
 }
 
-func (l *List) Reduce(f ReduceFn, a Item) Item {
+func (l List) Reduce(f ReduceFn, a Item) Item {
 	return Reduce(l, f, a)
 }
 
@@ -141,7 +141,7 @@ func (l *List) Reduce(f ReduceFn, a Item) Item {
 //
 //	call it like this:
 // 	list.From([]int{1,2,3})
-func From(source interface{}) (nl *List, e error) {
+func From(source interface{}) (nl List, e error) {
 	rv := reflect.ValueOf(source)
 	if rv.Kind() == reflect.Slice || rv.Kind() == reflect.Array {
 		rvLen := rv.Len()
@@ -149,12 +149,11 @@ func From(source interface{}) (nl *List, e error) {
 		for i := 0; i < rvLen; i++ {
 			data[i] = rv.Index(i).Interface()
 		}
-		nl = &List{data}
+		nl = data
 		e = nil
 	} else {
 		e = fmt.Errorf("ListFrom only accept slice or array input, but got %v", rv.Kind())
 	}
-
 	return
 }
 
@@ -187,7 +186,7 @@ func Map(list List, f MapFn) List {
 // then use each loop to get item from list
 // and feed item to FilterFn which decide weather keep it or not
 func Filter(list List, f FilterFn) List {
-	filteredList := make([]Item)
+	filteredList := make([]Item, 0)
 	Each(list, func(v Item, i int) {
 		if f(v, i) {
 			filteredList = append(filteredList, v)
@@ -239,7 +238,7 @@ func FindIndex(list List, f FilterFn) (index int) {
 //
 // it returns the specific item and ok flag
 func Find(list List, f FilterFn) (r Item, ok bool) {
-	l := list.Len()
+	l := len(list)
 	var item Item
 	for i := 0; i < l; i++ {
 		item = list[i]
