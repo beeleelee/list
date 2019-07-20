@@ -162,6 +162,10 @@ func From(source interface{}) (nl List, e error) {
 	return
 }
 
+func New(length int) List {
+	return make([]Item, length)
+}
+
 // Each - each loop
 //
 // use for loop to get item from list
