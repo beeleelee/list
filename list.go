@@ -98,6 +98,11 @@ type CmpFn func(a, b Item) bool
 
 type ReduceFn func(a, b Item) Item
 
+func (l *List) Append(items ...Item) List {
+	l = append(*l, items...)
+	return *l 
+}
+
 func (l List) Each(f EachFn) List {
 	Each(l, f)
 	return l 
