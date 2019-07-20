@@ -36,15 +36,15 @@ func TestMap(t *testing.T) {
 	}
 }
 
-// func TestFilter(t *testing.T) {
-// 	list, _ := From([]int{1,2,3,4,5,6,7})
-// 	list2 := Filter(list, func(v Item, i int) bool {
-// 		return v.(int) % 2 == 0
-// 	})
-// 	if !Equal(list2, &List{[]Item{2,4,6}}, cmp) {
-// 		t.Errorf("Filter seems not work")
-// 	}
-// }
+func TestFilter(t *testing.T) {
+	list, _ := From([]int{1,2,3,4,5,6,7})
+	list2 := list.Filter(func(v Item, i int) bool {
+		return v.(int) % 2 == 0
+	})
+	if !Equal(list2, []Item{2,4,6}, cmp) {
+		t.Errorf("Filter seems not work")
+	}
+}
 
 // func TestFindIndex(t *testing.T) {
 // 	list, _ := From([]rune{'a', 'b', 'c', 'd', 'e'})
