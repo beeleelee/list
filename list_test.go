@@ -46,15 +46,15 @@ func TestFilter(t *testing.T) {
 	}
 }
 
-// func TestFindIndex(t *testing.T) {
-// 	list, _ := From([]rune{'a', 'b', 'c', 'd', 'e'})
-// 	index := FindIndex(list, func(v Item, i int) bool {
-// 		return v.(rune) == 'e'
-// 	})
-// 	if index != 4 {
-// 		t.Errorf("expect item index is 4 but got %v", index)
-// 	}
-// }
+func TestFindIndex(t *testing.T) {
+	list, _ := From([]rune{'a', 'b', 'c', 'd', 'e'})
+	index := list.FindIndex(func(v Item, i int) bool {
+		return v.(rune) == 'e'
+	})
+	if index != 4 {
+		t.Errorf("expect item index is 4 but got %v", index)
+	}
+}
 
 // func TestEqual(t *testing.T) {
 // 	a := List{[]Item{'a', 'b', 'c', 'd', 'e'}}
