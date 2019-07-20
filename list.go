@@ -186,6 +186,14 @@ func FromFloat64s(source []float64) (nl List) {
 	return
 }
 
+func FromStrings(source []string) (nl List) {
+	nl = New(len(source))
+	for i, v := range source {
+		nl[i] = v
+	}
+	return
+}
+
 // New generate a new List instance
 func New(length int) List {
 	return make([]Item, length)
