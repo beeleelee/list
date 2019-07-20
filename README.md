@@ -60,36 +60,36 @@ func main() {
 ```
 
 
-FUNCTIONS
+## FUNCTIONS
 
-func Contains(list Lister, f FilterFn) (r bool)
+#### func Contains(list List, f FilterFn) (r bool)
     Contains - like Find
 
     return true if find the item return false if can not find the item
 
-func Each(list Lister, f EachFn)
+#### func Each(list List, f EachFn)
     Each - each loop
 
     use for loop to get item from list and feed item to EachFn
 
-func Equal(s, t Lister, f CmpFn) (r bool)
+#### func Equal(s, t List, f CmpFn) (r bool)
     Equal - a way to compare whether two list is equal
 
     it accept a CmpFn which handle the equal logic
 
-func FindIndex(list Lister, f FilterFn) (index int)
+#### func FindIndex(list List, f FilterFn) (index int)
     FindIndex - a way to find the index of a specific item
 
 	it return -1 if could not find the item
 	it accept a FilterFn which will specific the item
 
-func SumFloat64s(l []float64) float64
+#### func SumFloat64s(l []float64) float64
 
-func SumInts(l []int) int
+#### func SumInts(l []int) int
 
-TYPES
+## TYPES
 
-type CmpFn func(a, b Item) bool
+#### type CmpFn func(a, b Item) bool
     CmpFn compare handle signature
 
     func(a, b Item) bool {
@@ -98,7 +98,7 @@ type CmpFn func(a, b Item) bool
 
     }
 
-type EachFn func(Item, int)
+#### type EachFn func(Item, int)
     EachFn each loop handle signature
 
     func(v Item, i int){
@@ -109,7 +109,7 @@ type EachFn func(Item, int)
 
     }
 
-type FilterFn func(Item, int) bool
+#### type FilterFn func(Item, int) bool
     FilterFn filter loop handle signature
 
     func(v Item, i int) bool {
@@ -119,26 +119,29 @@ type FilterFn func(Item, int) bool
 
     }
 
-type Item interface{}
+#### type Item interface{}
     Item - generic type for list item
 
     in order to accept any type of item in collection
 
-func Find(list Lister, f FilterFn) (r Item, ok bool)
+#### func Find(list List, f FilterFn) (r Item, ok bool)
     Find - like FindIndex, but not return index of item
 
     it returns the specific item and ok flag
 
-type List struct {
-    Data []Item
-}
+#### func Reduce(list List, f ReduceFn, a Item) (r Item)
+    Reduce - fold the list
 
+#### type List []Item
     List a struct wrap collection in Data field
 
-    why use struct, can I use slice, like []Item ? actually I use []Item at
-    first time, but then went into trouble when implement Append method
+#### func Filter(list List, f FilterFn) List
+    Filter - filter loop
 
-func From(source interface{}) (nl List, e error)
+    first create a new list then use each loop to get item from list and
+    feed item to FilterFn which decide weather keep it or not
+
+#### func From(source interface{}) (nl List, e error)
     From - convert regular slice to List
 
 	as do not know the item type in the slic
@@ -148,45 +151,45 @@ func From(source interface{}) (nl List, e error)
 	call it like this:
 	list.From([]int{1,2,3})
 
-func (l *List) Append(v ...Item)
+#### func FromFloat64s(source []float64) (nl List)
 
-func (l *List) Get(i int) (item Item, e error)
-    Get return item in the collection by
+#### func FromInts(source []int) (nl List)
 
-func (l *List) Len() int
-    Len return the length of the collection
+#### func FromStrings(source []string) (nl List)
 
-func (_ *List) New(n int) Lister
-
-func (l *List) Set(i int, v Item) (e error)
-
-type Lister interface {
-    Len() int
-    Get(int) (Item, error)
-    Set(int, Item) error
-    New(int) Lister
-    Append(...Item)
-}
-    Lister - interface for list Len return the size of the list Get return
-    the item in the list by index Set return nil if successfully set item in
-    the list by index,
-
-	return error if failed
-
-    New return a new empty list Append item to extend the list with
-
-func Filter(list Lister, f FilterFn) Lister
-    Filter - filter loop
-
-    first create a new list by list.New then use each loop to get item from
-    list and feed item to FilterFn which decide weather keep it or not
-
-func Map(list Lister, f MapFn) Lister
+#### func Map(list List, f MapFn) List
     Map - map loop
 
     use for loop to get item from list and feed item to MapFn
 
-type MapFn func(Item, int) Item
+#### func New(length int) List
+    New generate a new List instance
+
+#### func (l List) Contains(f FilterFn) bool
+    Contains convenience wrapper for Contains function
+
+#### func (l List) Each(f EachFn) List
+    Each convenience wrapper for Each function
+
+#### func (l List) Equal(t List, f CmpFn) bool
+    Equal convenience wrapper for Equal function
+
+#### func (l List) Filter(f FilterFn) List
+    Filter convenience wrapper for Filter function
+
+#### func (l List) Find(f FilterFn) (Item, bool)
+    Find convenience wrapper for Find function
+
+#### func (l List) FindIndex(f FilterFn) int
+    FindIndex convenience wrapper for FindIndex function
+
+#### func (l List) Map(f MapFn) List
+    Map convenience wrapper for Map function
+
+#### func (l List) Reduce(f ReduceFn, a Item) Item
+    Reduce convenience wrapper for Reduce function
+
+#### type MapFn func(Item, int) Item
     MapFn map loop handle signature
 
     func(v Item, i int) (item Item) {
@@ -195,3 +198,6 @@ type MapFn func(Item, int) Item
 	return sv * sv
 
     }
+
+#### type ReduceFn func(a, b Item) Item
+    ReduceFn reduce handle signature
