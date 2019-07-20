@@ -18,11 +18,12 @@ func TestEach(t *testing.T) {
 	}
 	list2 := New(0)
 	Each(list, func(v Item, i int){
-		list2.Append(v)
+		list2 = append(list2, v)
 	})
 	if !Equal(list, list2, cmp) {
 		t.Errorf("seems Each not works")
 	}
+	//fmt.Println("...")
 }
 
 // func TestMap(t *testing.T) {
