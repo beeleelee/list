@@ -124,3 +124,15 @@ func TestReduce(t *testing.T) {
 		t.Errorf("reduce error, expect sum20 to be 35 but got %v", sum20)
 	}
 }
+
+func TestSome(t *testing.T) {
+	list := FromStrings([]string{"apple", "orange", "banana"})
+	hasBanana := Some(list, func(v Item, i int) bool {
+		return v.(string) == "banana"
+	})
+	t.Log("has banana: ", hasBanana)
+	if !hasBanana {
+		t.Errorf("some error, it should has banana")
+	}
+	
+}
