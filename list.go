@@ -143,6 +143,10 @@ func (l List) Contains(f FilterFn) bool {
 func (l List) Reduce(f ReduceFn, a Item) Item {
 	return Reduce(l, f, a)
 }
+// Some convenience wrapper for Some Function
+func (l List) Some(f FilterFn) bool {
+	return Some(l, f)
+}
 
 
 

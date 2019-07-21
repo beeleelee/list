@@ -134,5 +134,11 @@ func TestSome(t *testing.T) {
 	if !hasBanana {
 		t.Errorf("some error, it should has banana")
 	}
-	
+	hasFoo := list.Some(func(v Item, i int) bool {
+		return v.(string) == "foo"
+	})
+	t.Log("has banana: ", hasFoo)
+	if hasFoo {
+		t.Error("some error, it should not has foo")
+	}
 }
