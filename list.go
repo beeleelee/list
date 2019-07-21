@@ -3,6 +3,7 @@ package list
 import (
 	"fmt"
 	"reflect"
+	"math/rand"
 )
 
 // #package list
@@ -110,6 +111,9 @@ type CmpFn func(a, b Item) bool
 // ReduceFn reduce handle signature
 type ReduceFn func(a, b Item) Item
 
+// SwapFn swap items by index
+type SwapFn func(i, j int)
+
 // Each convenience wrapper for Each function
 func (l List) Each(f EachFn) List {
 	Each(l, f)
@@ -147,9 +151,13 @@ func (l List) Reduce(f ReduceFn, a Item) Item {
 func (l List) Some(f FilterFn) bool {
 	return Some(l, f)
 }
-// Every convenience wrapper fro Every Function
+// Every convenience wrapper for Every Function
 func (l List) Every(f FilterFn) bool {
 	return Every(l, f)
+}
+// Shuffle convenience wrapper for Shuffle Function
+func (l List) Shuffle() List {
+	return Shuffle(l)
 }
 
 
@@ -353,3 +361,19 @@ func Every(list List, f FilterFn) (r bool) {
 	}
 	return
 }
+
+// Shuffle - return a shuffled list
+func Shuffle(list List) (r List) {
+	l := len(list)
+	r = make([]Item, l)
+	copy(r, list)
+	if l < 2 {
+		return 
+	}else{
+		rand.Shuffle(l, func(i, j int) {
+			r[i], r[j] = r[j], r[i]
+		})
+	}
+	return
+}
+
