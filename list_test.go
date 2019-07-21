@@ -1,8 +1,8 @@
 package list_test
 
 import (
-	"fmt"
 	"testing"
+	"reflect"
 	. "../list"
 )
 
@@ -16,12 +16,13 @@ func TestEach(t *testing.T) {
 		t.Errorf("%v", err)
 		return 
 	}
-	list2 := New(0)
+	list2 := New(len(list))
 	Each(list, func(v Item, i int){
-		list2 = append(list2, v)
+		list2[i] = v
 	})
-	if !Equal(list, list2, cmp) {
-		t.Errorf("seems Each not works")
+	t.Log(list, list2)
+	if !reflect.DeepEqual(list, list2) {
+		t.Errorf("expect list: %v and list2: %v to be equal", list, list2)
 	}
 }
 
@@ -77,9 +78,9 @@ func TestFind(t *testing.T) {
 	})
 	
 	if userAlex == item {
-		fmt.Printf("%v equals %v, %v", item, userAlex, ok)
+		t.Logf("%v equals %v, %v", item, userAlex, ok)
 	}else{
-		fmt.Printf("%v not equals %v, %v", userAlex, item, ok)
+		t.Logf("%v not equals %v, %v", userAlex, item, ok)
 	}
 	
 	if !ok {
