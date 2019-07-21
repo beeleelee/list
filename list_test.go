@@ -160,3 +160,12 @@ func TestEvery(t *testing.T) {
 		t.Error("every error, some item should not bigger than 3")
 	}
 }
+
+func TestShuffle(t *testing.T) {
+	list := FromInts([]int{0,1,2,3,4,5,6,7,8,9})
+	list2 := Shuffle(list)
+	t.Log(list2)
+	list3 := list.Shuffle()
+	t.Log(list3)
+	t.Fail()
+}
