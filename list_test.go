@@ -142,3 +142,21 @@ func TestSome(t *testing.T) {
 		t.Error("some error, it should not has foo")
 	}
 }
+
+func TestEvery(t *testing.T) {
+	list := FromFloat64s([]float64{2.0, 3.0, 4.0})
+	biggerThan1 := Every(list, func(v Item, i int) bool {
+		return v.(float64) > 1
+	})
+	t.Log("bigger than 1: ", biggerThan1)
+	if !biggerThan1 {
+		t.Errorf("every error, all items should bigger than 1")
+	}
+	biggerThan3 := list.Every(func(v Item, i int) bool {
+		return v.(float64) > 3
+	})
+	t.Log("bigger than 3: ", biggerThan3)
+	if biggerThan3 {
+		t.Error("every error, some item should not bigger than 3")
+	}
+}
