@@ -90,7 +90,7 @@ func TestFind(t *testing.T) {
 	})
 
 	if ok {
-		t.Errorf("find error, how can it find user foo")
+		t.Errorf("find error, how could it find user foo")
 	}
 }
 
@@ -105,7 +105,7 @@ func TestContains(t *testing.T) {
 	})
 	
 	if hasFoo {
-		t.Errorf("seems Contain not work")
+		t.Errorf("contains error, list does not contains user foo")
 	}
 }
 
@@ -115,12 +115,12 @@ func TestReduce(t *testing.T) {
 		return a.(int) + b.(int)
 	}, nil)
 	if total.(int) != 15 {
-		t.Errorf("Reduce not work, expect total to be 15 but got %v", total)
+		t.Errorf("reduce error, expect total to be 15 but got %v", total)
 	}
 	sum20 := intList.Reduce(func(a, b Item) Item {
 		return a.(int) + b.(int)
 	}, 20)
 	if sum20 != 35 {
-		t.Errorf("Reduce not work, expect sum20 to be 35 but got %v", sum20)
+		t.Errorf("reduce error, expect sum20 to be 35 but got %v", sum20)
 	}
 }
