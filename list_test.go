@@ -28,11 +28,11 @@ func TestEach(t *testing.T) {
 
 func TestMap(t *testing.T) {
 	list := FromInts([]int{1,3,5,7,9})
-	newList := list.Map(func(v Item, i int) Item {
+	list2 := list.Map(func(v Item, i int) Item {
 		return v.(int) * 2
 	})
-	if !Equal(newList, []Item{2,6,10,14,18}, cmp) {
-		t.Errorf("before map %v \n after map %v", list, newList)
+	if !Equal(list2, []Item{2,6,10,14,18}, cmp) {
+		t.Errorf("expect list2: %v to be %v", list2, []Item{2,6,10,14,18})
 	}
 }
 
@@ -42,7 +42,7 @@ func TestFilter(t *testing.T) {
 		return v.(int) % 2 == 0
 	})
 	if !Equal(list2, []Item{2,4,6}, cmp) {
-		t.Errorf("Filter seems not work")
+		t.Errorf("expect list2: %v to be %v", list2, []Item{2,4,6})
 	}
 }
 
@@ -61,7 +61,7 @@ func TestEqual(t *testing.T) {
 	b := []Item{'a', 'b', 'c', 'd', 'e'}
 	
 	if !Equal(a, b, cmp) {
-		t.Errorf("s %v should be equal to t %v, but got not equal", a, b)
+		t.Errorf("expect a: %v should be equal to b: %v, but got not equal", a, b)
 	}
 }
 
@@ -79,12 +79,18 @@ func TestFind(t *testing.T) {
 	
 	if userAlex == item {
 		t.Logf("%v equals %v, %v", item, userAlex, ok)
-	}else{
-		t.Logf("%v not equals %v, %v", userAlex, item, ok)
 	}
 	
 	if !ok {
-		t.Errorf("seems Find not work")
+		t.Errorf("find error, it should find user alex")
+	}
+
+	_, ok = Find(list, func(v Item, i int) bool {
+		return v.(User).name == "foo"
+	})
+
+	if ok {
+		t.Errorf("find error, how can it find user foo")
 	}
 }
 
