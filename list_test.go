@@ -167,5 +167,4 @@ func TestShuffle(t *testing.T) {
 	t.Log(list2)
 	list3 := list.Shuffle()
 	t.Log(list3)
-	t.Fail()
 }

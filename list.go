@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"math/rand"
+	"time"
 )
 
 // #package list
@@ -367,9 +368,8 @@ func Shuffle(list List) (r List) {
 	l := len(list)
 	r = make([]Item, l)
 	copy(r, list)
-	if l < 2 {
-		return 
-	}else{
+	if l > 1 {
+		rand.Seed(time.Now().UnixNano())
 		rand.Shuffle(l, func(i, j int) {
 			r[i], r[j] = r[j], r[i]
 		})
