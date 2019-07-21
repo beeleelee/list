@@ -320,3 +320,15 @@ func Reduce(list List, f ReduceFn, a Item) (r Item) {
 	r = a
 	return
 }
+
+// Some - return true if any item pass test
+func Some(list List, f FilterFn) (r bool) {
+	l := len(list)
+	for i := 0; i < l; i++ {
+		if f(list[i], i) {
+			r = true
+			break
+		}
+	}
+	return
+}
