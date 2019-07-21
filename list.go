@@ -147,6 +147,10 @@ func (l List) Reduce(f ReduceFn, a Item) Item {
 func (l List) Some(f FilterFn) bool {
 	return Some(l, f)
 }
+// Every convenience wrapper fro Every Function
+func (l List) Every(f FilterFn) bool {
+	return Every(l, f)
+}
 
 
 
@@ -331,6 +335,19 @@ func Some(list List, f FilterFn) (r bool) {
 	for i := 0; i < l; i++ {
 		if f(list[i], i) {
 			r = true
+			break
+		}
+	}
+	return
+}
+
+// Every - return true if every item pass test
+func Every(list List, f FilterFn) (r bool) {
+	l := len(list)
+	r = true 
+	for i := 0; i < l; i++ {
+		if !f(list[i], i) {
+			r = false
 			break
 		}
 	}
