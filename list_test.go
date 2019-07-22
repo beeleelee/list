@@ -168,3 +168,14 @@ func TestShuffle(t *testing.T) {
 	list3 := list.Shuffle()
 	t.Log(list3)
 }
+
+func TestSort(t *testing.T) {
+	list := FromInts([]int{9,5,3,7,2,8,0,4,1,6})
+	Sort(list, func(i, j int) bool {
+		return list[i].(int) < list[j].(int)
+	})
+	t.Log(list)
+	if !reflect.DeepEqual(list, FromInts([]int{0,1,2,3,4,5,6,7,8,9})) {
+		t.Error("sort error, sorted items has wrong order")
+	}
+}
