@@ -2,8 +2,9 @@ package list
 
 import (
 	"fmt"
-	"reflect"
 	"math/rand"
+	"reflect"
+	"sort"
 	"time"
 )
 
@@ -115,53 +116,64 @@ type ReduceFn func(a, b Item) Item
 // SwapFn swap items by index
 type SwapFn func(i, j int)
 
+// LessFn same signature as sort.Less
+type LessFn func(i, j int) bool
+
 // Each convenience wrapper for Each function
 func (l List) Each(f EachFn) List {
 	Each(l, f)
-	return l 
+	return l
 }
+
 // Map convenience wrapper for Map function
 func (l List) Map(f MapFn) List {
 	return Map(l, f)
 }
+
 // Filter convenience wrapper for Filter function
 func (l List) Filter(f FilterFn) List {
 	return Filter(l, f)
 }
+
 // Equal convenience wrapper for Equal function
 func (l List) Equal(t List, f CmpFn) bool {
 	return Equal(l, t, f)
 }
+
 // FindIndex convenience wrapper for FindIndex function
 func (l List) FindIndex(f FilterFn) int {
 	return FindIndex(l, f)
 }
+
 // Find convenience wrapper for Find function
 func (l List) Find(f FilterFn) (Item, bool) {
 	return Find(l, f)
 }
+
 // Contains convenience wrapper for Contains function
 func (l List) Contains(f FilterFn) bool {
 	return Contains(l, f)
 }
+
 // Reduce convenience wrapper for Reduce function
 func (l List) Reduce(f ReduceFn, a Item) Item {
 	return Reduce(l, f, a)
 }
+
 // Some convenience wrapper for Some Function
 func (l List) Some(f FilterFn) bool {
 	return Some(l, f)
 }
+
 // Every convenience wrapper for Every Function
 func (l List) Every(f FilterFn) bool {
 	return Every(l, f)
 }
+
 // Shuffle convenience wrapper for Shuffle Function
 func (l List) Shuffle() List {
 	return Shuffle(l)
 }
-
-
 
 //From - convert regular slice to List
 //
@@ -241,7 +253,7 @@ func Map(list List, f MapFn) List {
 
 // Filter - filter loop
 //
-// first create a new list 
+// first create a new list
 // then use each loop to get item from list
 // and feed item to FilterFn which decide weather keep it or not
 func Filter(list List, f FilterFn) List {
@@ -353,7 +365,7 @@ func Some(list List, f FilterFn) (r bool) {
 // Every - return true if every item pass test
 func Every(list List, f FilterFn) (r bool) {
 	l := len(list)
-	r = true 
+	r = true
 	for i := 0; i < l; i++ {
 		if !f(list[i], i) {
 			r = false
@@ -377,3 +389,7 @@ func Shuffle(list List) (r List) {
 	return
 }
 
+// Sort - collection sorting
+func Sort(list List, f LessFn) {
+	sort.Slice(list, f)
+}
