@@ -181,6 +181,11 @@ func (l List) Sort(f LessFn) List {
 	return l
 }
 
+// IsSorted convenience wrapper fro std sort.SliceIsSorted
+func (l List) IsSorted(f LessFn) bool {
+	return sort.SliceIsSorted(l, f)
+}
+
 //From - convert regular slice to List
 //
 //	as do not know the item type in the slic
@@ -398,4 +403,9 @@ func Shuffle(list List) (r List) {
 // Sort - convenience wrapper for std sort.Slice
 func Sort(list List, f LessFn) {
 	sort.Slice(list, f)
+}
+
+// IsSorted - convenience wrapper for std sort.SliceIsSorted
+func IsSorted(list List, f LessFn) bool {
+	return sort.SliceIsSorted(list, f)
 }
