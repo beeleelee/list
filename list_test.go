@@ -193,3 +193,12 @@ func TestSort(t *testing.T) {
 		t.Error("sort error, the first item of sorted list2 should be tom")
 	}
 }
+
+func TestIsSorted(t *testing.T) {
+	list := FromInts([]int{9,5,3,7,2,8,0,4,1,6})
+	if list.IsSorted(func(i, j int) bool {
+		return list[i].(int) < list[j].(int)
+	}) {
+		t.Error("isSorted error, list does not sorted")
+	}
+}
