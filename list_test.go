@@ -178,4 +178,18 @@ func TestSort(t *testing.T) {
 	if !reflect.DeepEqual(list, FromInts([]int{0,1,2,3,4,5,6,7,8,9})) {
 		t.Error("sort error, sorted items has wrong order")
 	}
+	type Student struct {
+		name string 
+		id int 
+	}
+	list2, _ := From([]Student{{"leo", 1}, {"lucy", 2}, {"tom", 3}})
+	Sort(list2, func(i, j int) bool {
+		ui := list2[i].(Student)
+		uj := list2[j].(Student)
+		return ui.id > uj.id
+	})
+	t.Log(list2)
+	if list2[0].(Student).name != "tom" {
+		t.Error("sort error, the first item of sorted list2 should be tom")
+	}
 }

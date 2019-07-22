@@ -175,6 +175,12 @@ func (l List) Shuffle() List {
 	return Shuffle(l)
 }
 
+// Sort convenience wrapper for std sort.Slice
+func (l List) Sort(f LessFn) List {
+	sort.Slice(l, f)
+	return l
+}
+
 //From - convert regular slice to List
 //
 //	as do not know the item type in the slic
@@ -389,7 +395,7 @@ func Shuffle(list List) (r List) {
 	return
 }
 
-// Sort - collection sorting
+// Sort - convenience wrapper for std sort.Slice
 func Sort(list List, f LessFn) {
 	sort.Slice(list, f)
 }
