@@ -95,20 +95,20 @@ type EachFn func(Item, int)
 // }
 type MapFn func(Item, int) Item
 
-//FilterFn filter loop handle signature
+//ItemTestFn filter loop handle signature
 //
 // func(v Item, i int) bool {
 // 	sv := v.(string)
 // 	return sv == "foo"
 // }
-type FilterFn func(Item, int) bool
+type ItemTestFn func(Item, int) bool
 
-//CmpFn compare handle signature
+//EqualFn compare handle signature
 //
 // func(a, b Item) bool {
 // 	return a == b
 // }
-type CmpFn func(a, b Item) bool
+type EqualFn func(a, b Item) bool
 
 // ReduceFn reduce handle signature
 type ReduceFn func(a, b Item) Item
@@ -131,27 +131,27 @@ func (l List) Map(f MapFn) List {
 }
 
 // Filter convenience wrapper for Filter function
-func (l List) Filter(f FilterFn) List {
+func (l List) Filter(f ItemTestFn) List {
 	return Filter(l, f)
 }
 
 // Equal convenience wrapper for Equal function
-func (l List) Equal(t List, f CmpFn) bool {
+func (l List) Equal(t List, f EqualFn) bool {
 	return Equal(l, t, f)
 }
 
 // FindIndex convenience wrapper for FindIndex function
-func (l List) FindIndex(f FilterFn) int {
+func (l List) FindIndex(f ItemTestFn) int {
 	return FindIndex(l, f)
 }
 
 // Find convenience wrapper for Find function
-func (l List) Find(f FilterFn) (Item, bool) {
+func (l List) Find(f ItemTestFn) (Item, bool) {
 	return Find(l, f)
 }
 
 // Contains convenience wrapper for Contains function
-func (l List) Contains(f FilterFn) bool {
+func (l List) Contains(f ItemTestFn) bool {
 	return Contains(l, f)
 }
 
@@ -161,12 +161,12 @@ func (l List) Reduce(f ReduceFn, a Item) Item {
 }
 
 // Some convenience wrapper for Some Function
-func (l List) Some(f FilterFn) bool {
+func (l List) Some(f ItemTestFn) bool {
 	return Some(l, f)
 }
 
 // Every convenience wrapper for Every Function
-func (l List) Every(f FilterFn) bool {
+func (l List) Every(f ItemTestFn) bool {
 	return Every(l, f)
 }
 
@@ -266,8 +266,8 @@ func Map(list List, f MapFn) List {
 //
 // first create a new list
 // then use each loop to get item from list
-// and feed item to FilterFn which decide weather keep it or not
-func Filter(list List, f FilterFn) List {
+// and feed item to ItemTestFn which decide weather keep it or not
+func Filter(list List, f ItemTestFn) List {
 	filteredList := make([]Item, 0)
 	Each(list, func(v Item, i int) {
 		if f(v, i) {
@@ -279,8 +279,8 @@ func Filter(list List, f FilterFn) List {
 
 // Equal - a way to compare whether two list is equal
 //
-// it accept a CmpFn which handle the equal logic
-func Equal(s, t List, f CmpFn) (r bool) {
+// it accept a EqualFn which handle the equal logic
+func Equal(s, t List, f EqualFn) (r bool) {
 	sLen := len(s)
 	tLen := len(t)
 	r = true
@@ -303,8 +303,8 @@ func Equal(s, t List, f CmpFn) (r bool) {
 // FindIndex - a way to find the index of a specific item
 //
 //	it return -1 if could not find the item
-//	it accept a FilterFn which will specific the item
-func FindIndex(list List, f FilterFn) (index int) {
+//	it accept a ItemTestFn which will specific the item
+func FindIndex(list List, f ItemTestFn) (index int) {
 	l := len(list)
 	index = -1
 	for i := 0; i < l; i++ {
@@ -319,7 +319,7 @@ func FindIndex(list List, f FilterFn) (index int) {
 // Find - like FindIndex, but not return index of item
 //
 // it returns the specific item and ok flag
-func Find(list List, f FilterFn) (r Item, ok bool) {
+func Find(list List, f ItemTestFn) (r Item, ok bool) {
 	l := len(list)
 	var item Item
 	for i := 0; i < l; i++ {
@@ -338,7 +338,7 @@ func Find(list List, f FilterFn) (r Item, ok bool) {
 //
 // return true if find the item
 // return false if can not find the item
-func Contains(list List, f FilterFn) (r bool) {
+func Contains(list List, f ItemTestFn) (r bool) {
 	if _, ok := Find(list, f); ok {
 		r = true
 	} else {
@@ -362,7 +362,7 @@ func Reduce(list List, f ReduceFn, a Item) (r Item) {
 }
 
 // Some - return true if any item pass test
-func Some(list List, f FilterFn) (r bool) {
+func Some(list List, f ItemTestFn) (r bool) {
 	l := len(list)
 	for i := 0; i < l; i++ {
 		if f(list[i], i) {
@@ -374,7 +374,7 @@ func Some(list List, f FilterFn) (r bool) {
 }
 
 // Every - return true if every item pass test
-func Every(list List, f FilterFn) (r bool) {
+func Every(list List, f ItemTestFn) (r bool) {
 	l := len(list)
 	r = true
 	for i := 0; i < l; i++ {
