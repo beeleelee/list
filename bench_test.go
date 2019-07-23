@@ -30,7 +30,7 @@ func TestBigList(t *testing.T) {
 	sliceSumEndTime := time.Now()
 	t.Logf("slice sum duration: %v", sliceSumEndTime.Sub(sliceSumStartTime))
 	t.Log(s, sum)
-	//t.Fail()
+	t.Fail()
 }
 
 func TestBigListConcurrent(t *testing.T) {
@@ -47,6 +47,7 @@ func TestBigListConcurrent(t *testing.T) {
 	s := 0
 	splitNum := maxSize / goRoutineNum
 	var start, end int
+	c := make(chan int)
 	for i := 0; i < goRoutineNum; i++ {
 		start = i * splitNum
 		if i + 1 == goRoutineNum {
@@ -55,10 +56,13 @@ func TestBigListConcurrent(t *testing.T) {
 			end = (i + 1) * splitNum
 		}
 		go func(l List) {
-			s += (l.Reduce(func(a, b Item) Item {
+			c <- (l.Reduce(func(a, b Item) Item {
 				return a.(int) + b.(int)
 			}, nil)).(int)
 		}(list[start:end])
+	}
+	for i := 0; i < goRoutineNum; i++{
+		s += <-c
 	}
 	listSumEndTime := time.Now()
 	t.Logf("list sum duration: %v", listSumEndTime.Sub(listSumStartTime))
