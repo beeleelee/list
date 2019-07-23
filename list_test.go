@@ -202,3 +202,22 @@ func TestIsSorted(t *testing.T) {
 		t.Error("isSorted error, list does not sorted")
 	}
 }
+
+func TestGet(t *testing.T) {
+	list := FromInts([]int{0,1,2,3,4,5,6,7,8,9})
+	if Get(list, -1) != 9 {
+		t.Error("get error, it should get item 9")
+	}
+	if Get(list, 20) != nil {
+		t.Error("get error, it should get a nil")
+	}
+	if list.Get(-7) != 3 {
+		t.Error("get error, it should get item 3")
+	}
+	if list.Get(-20) != nil {
+		t.Error("get error, it should get a nil")
+	}
+	if FromStrings([]string{}).Get(0) != nil {
+		t.Error("get error, it should get a nil")
+	}
+}

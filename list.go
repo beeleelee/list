@@ -181,9 +181,14 @@ func (l List) Sort(f LessFn) List {
 	return l
 }
 
-// IsSorted convenience wrapper fro std sort.SliceIsSorted
+// IsSorted convenience wrapper for std sort.SliceIsSorted
 func (l List) IsSorted(f LessFn) bool {
 	return sort.SliceIsSorted(l, f)
+}
+
+// Get convenience wrapper for Get Function
+func (l List) Get(i int) Item {
+	return Get(l, i)
 }
 
 //From - convert regular slice to List
@@ -408,4 +413,26 @@ func Sort(list List, f LessFn) {
 // IsSorted - convenience wrapper for std sort.SliceIsSorted
 func IsSorted(list List, f LessFn) bool {
 	return sort.SliceIsSorted(list, f)
+}
+
+// Get - get item from list
+// it can accept negative int as index, like -1
+// attention: it will never failed
+// if then index out of range, or no item in list,  it will return nil
+func Get(list List, i int) Item {
+	l := len(list)
+	if l == 0 {
+		return nil
+	}
+	index := i
+	if i > l-1 {
+		return nil
+	}
+	if i < 0 {
+		index = l + i
+	}
+	if index < 0 {
+		return nil
+	}
+	return list[index]
 }
