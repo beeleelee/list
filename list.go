@@ -191,6 +191,11 @@ func (l List) Get(i int) Item {
 	return Get(l, i)
 }
 
+// LastN convenience wrapper for LastN Function
+func (l List) LastN(n int) List {
+	return LastN(l, n)
+}
+
 //From - convert regular slice to List
 //
 //	as do not know the item type in the slic
