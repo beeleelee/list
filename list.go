@@ -436,3 +436,13 @@ func Get(list List, i int) Item {
 	}
 	return list[index]
 }
+
+// LastN - get items from last
+func LastN(list List, n int) List {
+	l := len(list)
+	if l == 0 || n >= l {
+		return list
+	}
+
+	return list[l-n:]
+}

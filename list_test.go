@@ -222,3 +222,15 @@ func TestGet(t *testing.T) {
 	}
 }
 
+func TestLastN(t *testing.T) {
+	list := FromInts([]int{1,2,3,4,5})
+	last1 := LastN(list, 1)
+	if last1[0].(int) != 5 {
+		t.Error("lastN error, it should return [5]")
+	}
+	last3 := LastN(list, 3)
+	if reflect.DeepEqual(last3, []Item{3,4,5}) {
+		t.Error("lastN error, it should return [3,4,5]")
+	}
+	t.Fail()
+}

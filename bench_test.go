@@ -32,7 +32,29 @@ func TestBigList(t *testing.T) {
 	t.Log(s, sum)
 	t.Fail()
 }
-
+func concurrentSum(c chan int, l List, times int) {
+	size := len(l)
+	splitNum := size / times 
+	var start, end, count int 
+	count = 0
+	for i := 0; i < times; i++ {
+		start = i * splitNum
+		if i + 1 == times {
+			end = size
+		}else{
+			end = (i + 1) * splitNum
+		}
+		go func(l List) {
+			count++
+			c <- (l.Reduce(func(a, b Item) Item {
+				return a.(int) + b.(int)
+			}, nil)).(int)
+			if count + 1 == times {
+				close(c)
+			}
+		}(l[start:end])
+	}
+}
 func TestBigListConcurrent(t *testing.T) {
 	maxSize := 1 << 26
 	t.Log(maxSize)
@@ -45,22 +67,9 @@ func TestBigListConcurrent(t *testing.T) {
 	listSumStartTime := time.Now()
 	goRoutineNum := 10
 	s := 0
-	splitNum := maxSize / goRoutineNum
-	var start, end int
+	
 	c := make(chan int)
-	for i := 0; i < goRoutineNum; i++ {
-		start = i * splitNum
-		if i + 1 == goRoutineNum {
-			end = maxSize
-		}else{
-			end = (i + 1) * splitNum
-		}
-		go func(l List) {
-			c <- (l.Reduce(func(a, b Item) Item {
-				return a.(int) + b.(int)
-			}, nil)).(int)
-		}(list[start:end])
-	}
+	concurrentSum(c, list, goRoutineNum)
 	for i := 0; i < goRoutineNum; i++{
 		s += <-c
 	}
