@@ -269,3 +269,21 @@ func TestIntersection(t *testing.T) {
 		t.Error("intersection error, intersect list should be [1,0]")
 	}
 }
+
+func TestDifference(t *testing.T) {
+	l1 := FromInts([]int{0,1,2,4,7})
+	l2 := FromInts([]int{3,4,5,6,9,8})
+	l3 := FromInts([]int{1,6,5,0})
+	t.Log(Difference(l2, l1, cmp))
+	t.Log(l2.Difference(l3, cmp))
+	t.Log(l3.Difference(l1, cmp))
+	if !reflect.DeepEqual(Difference(l1, l2, cmp), List([]Item{0,1,2,7})) {
+		t.Error("intersection error, intersect list should be [4]")
+	}
+	if !reflect.DeepEqual(l2.Difference(l3, cmp), List([]Item{3,4,9,8})) {
+		t.Error("intersection error, intersect list should be [5,6]")
+	}
+	if !reflect.DeepEqual(l3.Difference(l1, cmp), List([]Item{6,5})) {
+		t.Error("intersection error, intersect list should be [1,0]")
+	}
+}

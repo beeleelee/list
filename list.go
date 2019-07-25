@@ -498,7 +498,20 @@ func Intersection(s List, t List, f EqualFn) (r List) {
 
 // Difference - return a list with items not in the other list
 func Difference(s List, t List, f EqualFn) (r List) {
-	return Intersection(s, t, func(a, b Item) bool {
-		return !f(a, b)
-	})
+	minLen := int(math.Min(float64(len(s)), float64(len(t))))
+	r = List(make([]Item, minLen))
+	if minLen == 0 {
+		return
+	}
+	index := 0
+	for _, v := range s {
+		if !Contains(t, func(sv Item, _ int) bool {
+			return f(v, sv)
+		}) {
+			r[index] = v
+			index++
+		}
+	}
+	r = r[0:index]
+	return
 }
