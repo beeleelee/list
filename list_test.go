@@ -242,3 +242,12 @@ func TestTail(t *testing.T) {
 		t.Error("lastN error, last4 should be [2,3,4,5]")
 	}
 }
+
+func TestUnion(t *testing.T) {
+	l1 := FromInts([]int{0,1,2})
+	l2 := FromInts([]int{3,4,5})
+	l3 := FromStrings([]string{"apple", "banana", "orange"})
+	t.Log(Union(l1, l2))
+	t.Log(l2.Union(l3))
+	t.Log(l1.Union(l2).Union(l3))
+}

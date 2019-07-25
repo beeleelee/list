@@ -459,5 +459,5 @@ func Tail(list List, n int) List {
 
 // Union - union two lists
 func Union(s List, t List) List {
-	return append(s, t)
+	return append(s, t...)
 }
