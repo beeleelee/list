@@ -191,9 +191,9 @@ func (l List) Get(i int) Item {
 	return Get(l, i)
 }
 
-// LastN convenience wrapper for LastN Function
-func (l List) LastN(n int) List {
-	return LastN(l, n)
+// Tail convenience wrapper for Tail Function
+func (l List) Tail(n int) List {
+	return Tail(l, n)
 }
 
 //From - convert regular slice to List
@@ -442,8 +442,8 @@ func Get(list List, i int) Item {
 	return list[index]
 }
 
-// LastN - get items from last
-func LastN(list List, n int) List {
+// Tail - get items from last
+func Tail(list List, n int) List {
 	l := len(list)
 	if l == 0 || n >= l {
 		return list

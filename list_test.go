@@ -222,21 +222,21 @@ func TestGet(t *testing.T) {
 	}
 }
 
-func TestLastN(t *testing.T) {
+func TestTail(t *testing.T) {
 	list := FromInts([]int{1,2,3,4,5})
-	last1 := LastN(list, 1)
+	last1 := Tail(list, 1)
 	if last1[0].(int) != 5 {
 		t.Error("lastN error, last1 should be [5]")
 	}
-	last3 := LastN(list, 3)
+	last3 := Tail(list, 3)
 	if !reflect.DeepEqual(last3, List([]Item{3,4,5})) {
 		t.Error("lastN error, last3 should be [3,4,5]")
 	}
-	last10 := list.LastN(10)
+	last10 := list.Tail(10)
 	if !reflect.DeepEqual(list, last10) {
 		t.Error("lastN error, last10 should be equal witch list")
 	}
-	last4 := list.LastN(4)
+	last4 := list.Tail(4)
 	if !reflect.DeepEqual(last4, List([]Item{2,3,4,5})) {
 		t.Log(last4)
 		t.Error("lastN error, last4 should be [2,3,4,5]")
