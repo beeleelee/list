@@ -207,6 +207,11 @@ func (l List) Intersection(t List, f EqualFn) List {
 	return Intersection(l, t, f)
 }
 
+// Difference convenience wrapper for Difference Function
+func (l List) Difference(t List, f EqualFn) List {
+	return Difference(l, t, f)
+}
+
 //From - convert regular slice to List
 //
 //	as do not know the item type in the slic
@@ -231,6 +236,7 @@ func From(source interface{}) (nl List, e error) {
 	return
 }
 
+// FromInts convert int slice to List
 func FromInts(source []int) (nl List) {
 	nl = New(len(source))
 	for i, v := range source {
@@ -239,6 +245,7 @@ func FromInts(source []int) (nl List) {
 	return
 }
 
+// FromFloat64s convert float64 slice to List
 func FromFloat64s(source []float64) (nl List) {
 	nl = New(len(source))
 	for i, v := range source {
@@ -247,6 +254,7 @@ func FromFloat64s(source []float64) (nl List) {
 	return
 }
 
+// FromStrings convert string slice to List
 func FromStrings(source []string) (nl List) {
 	nl = New(len(source))
 	for i, v := range source {
@@ -468,7 +476,7 @@ func Union(s List, t List) List {
 	return append(s, t...)
 }
 
-// Intersection - intersection of two lists
+// Intersection - return a list with items in both list
 func Intersection(s List, t List, f EqualFn) (r List) {
 	minLen := int(math.Min(float64(len(s)), float64(len(t))))
 	r = List(make([]Item, minLen))
@@ -486,4 +494,11 @@ func Intersection(s List, t List, f EqualFn) (r List) {
 	}
 	r = r[0:index]
 	return
+}
+
+// Difference - return a list with items not in the other list
+func Difference(s List, t List, f EqualFn) (r List) {
+	return Intersection(s, t, func(a, b Item) bool {
+		return !f(a, b)
+	})
 }
