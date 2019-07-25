@@ -19,7 +19,7 @@ func TestIntListMap(t *testing.T) {
 		return v + 1
 	})
 	expectedList := IntList([]int{3,4,6,8,10,12,14})
-	if reflect.DeepEqual(list2, expectedList) {
+	if !reflect.DeepEqual(list2, expectedList) {
 		t.Errorf("intlist map error: list2 should be %v", expectedList)
 	}
 }
