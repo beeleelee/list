@@ -20,7 +20,7 @@ func TestIntListMap(t *testing.T) {
 	})
 	expectedList := IntList([]int{3,4,6,8,10,12,14})
 	if !reflect.DeepEqual(list2, expectedList) {
-		t.Errorf("intlist map error: list2 should be %v", expectedList)
+		t.Errorf("intlist Map error: list2 should be %v", expectedList)
 	}
 }
 
@@ -31,6 +31,14 @@ func TestIntListFilter(t *testing.T) {
 	})
 	expectedList := IntList([]int{0,2,4,6})
 	if !reflect.DeepEqual(list2, expectedList) {
-		t.Errorf("intlist map error: list2 should be %v", expectedList)
+		t.Errorf("intlist Map error: list2 should be %v", expectedList)
+	}
+}
+
+func TestIntListFindIndex(t *testing.T) {
+	list := IntList([]int{5,8,13,17})
+	index := list.FindIndex(17)
+	if index != 3 {
+		t.Error("intlist FindIndex error: the index should be 3")
 	}
 }
