@@ -49,3 +49,13 @@ func TestIntListContains(t *testing.T) {
 		t.Error("intlist Contains error: list should contains 13")
 	}
 }
+
+func TestIntListReduce(t *testing.T) {
+	list := IntList([]int{5,8,13,17})
+	sum := list.Reduce(func(a, b int) int {
+		return a + b
+	}, 0)
+	if sum != 43 {
+		t.Error("intlist Reduce error: sum should be 43")
+	}
+}

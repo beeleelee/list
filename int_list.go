@@ -4,14 +4,17 @@ package list
 // for the sake of better performance
 type IntList []int
 
-// ILEachFn method Each handle signature
+// ILEachFn method Each handler signature
 type ILEachFn func(v, i int)
 
-// ILMapFn method Map handle signature
+// ILMapFn method Map handler signature
 type ILMapFn func(v, i int) int 
 
-// ILItemTestFn method Filter handle signature
+// ILItemTestFn method Filter handler signature
 type ILItemTestFn func(v, i int) bool
+
+// ILReduceFn method Reduce handler signature
+type ILReduceFn func(a, b int) int 
 
 func (l IntList) Each(f ILEachFn) IntList {
 	for i, v := range l {
@@ -57,4 +60,12 @@ func (l IntList) Contains(v int) (r bool) {
 		r = false
 	}
 	return
+}
+
+func (l IntList) Reduce(f ILReduceFn, startv int) (r int) {
+	r = startv 
+	for _, v := range l {
+		r = f(r, v)
+	}
+	return 
 }
