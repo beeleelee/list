@@ -93,3 +93,15 @@ func (l IntList) Every(f ILItemTestFn) (r bool) {
 	}
 	return 
 }
+
+func (l IntList) Len() int {
+	return len(l)
+}
+
+func (l IntList) Less(i, j int) bool {
+	return l[i] < l[j]
+}
+
+func (l IntList) Swap(i, j int) {
+	l[i], l[j] = l[j], l[i]
+}
