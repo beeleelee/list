@@ -6,6 +6,8 @@ type ILEachFn func(v, i int)
 
 type ILMapFn func(v, i int) int 
 
+type ILItemTestFn func(v, i int) bool
+
 func (l IntList) Each(f ILEachFn) IntList {
 	for i, v := range l {
 		f(v, i)
@@ -19,4 +21,14 @@ func (l IntList) Map(f ILMapFn) (r IntList) {
 		r[i] = f(v, i)
 	}
 	return
+}
+
+func (l IntList) Filter(f ILItemTestFn) (r IntList) {
+	r = IntList([]int{})
+	for i, v := range l {
+		if f(v, i) {
+			r = append(r, v)
+		}
+	}	
+	return 
 }
