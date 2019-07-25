@@ -476,11 +476,14 @@ func Intersection(s List, t List, f EqualFn) (r List) {
 		return
 	}
 	index := 0
-	for i, v := range s {
-		if f(v, t[i]) {
+	for _, v := range s {
+		if Contains(t, func(sv Item, _ int) bool {
+			return f(v, sv)
+		}) {
 			r[index] = v
 			index++
 		}
 	}
+	r = r[0:index]
 	return
 }

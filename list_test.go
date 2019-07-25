@@ -251,3 +251,21 @@ func TestUnion(t *testing.T) {
 	t.Log(l2.Union(l3))
 	t.Log(l1.Union(l2).Union(l3))
 }
+
+func TestIntersection(t *testing.T) {
+	l1 := FromInts([]int{0,1,2,4,7})
+	l2 := FromInts([]int{3,4,5,6,9,8})
+	l3 := FromInts([]int{1,6,5,0})
+	t.Log(Intersection(l2, l1, cmp))
+	t.Log(l2.Intersection(l3, cmp))
+	t.Log(l3.Intersection(l1, cmp))
+	if !reflect.DeepEqual(Intersection(l1, l2, cmp), List([]Item{4})) {
+		t.Error("intersection error, intersect list should be [4]")
+	}
+	if !reflect.DeepEqual(l2.Intersection(l3, cmp), List([]Item{5,6})) {
+		t.Error("intersection error, intersect list should be [5,6]")
+	}
+	if !reflect.DeepEqual(l3.Intersection(l1, cmp), List([]Item{1,0})) {
+		t.Error("intersection error, intersect list should be [1,0]")
+	}
+}
