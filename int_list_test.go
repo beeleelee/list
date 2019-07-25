@@ -99,3 +99,20 @@ func TestIntListIsSorted(t *testing.T) {
 		t.Error("intlist IsSorted error: listSorted should have been sorted")
 	}
 }
+
+func TestIntListGet(t *testing.T) {
+	list := IntList([]int{0,1,2,3,4,5,6,7,8,9})
+	if item, _ := list.Get(-1); item != 9 {
+		t.Error("intlist Get error, item should be 9")
+	}
+	if _, ok := list.Get(20); ok != false {
+		t.Error("intlist Get error, ok should be false")
+	}
+	if item, _ := list.Get(-7); item != 3 {
+		t.Error("intlist Get error, item should be 3")
+	}
+	if _, ok := list.Get(-20); ok != false {
+		t.Error("intlist Get error, ok should be false")
+	}
+	
+}
