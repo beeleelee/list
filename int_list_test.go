@@ -68,3 +68,12 @@ func TestIntListSome(t *testing.T) {
 		t.Error("intlist Some eror: list should have even int")
 	}
 }
+
+func TestIntListEvery(t *testing.T) {
+	list := IntList([]int{1,2,3,4,5})
+	if list.Every(func(v, i int) bool {
+		return v % 2 == 0
+	}) {
+		t.Error("intlist Every eror: list should have odd int")
+	}
+}

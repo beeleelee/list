@@ -81,3 +81,15 @@ func (l IntList) Some(f ILItemTestFn) (r bool) {
 	}
 	return 
 }
+
+func (l IntList) Every(f ILItemTestFn) (r bool) {
+	size := len(l)
+	r = true 
+	for i := 0; i < size; i++ {
+		if !f(l[i], i) {
+			r = false
+			break
+		}
+	}
+	return 
+}
