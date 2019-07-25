@@ -196,6 +196,11 @@ func (l List) Tail(n int) List {
 	return Tail(l, n)
 }
 
+// Union convenience wrapper for Union Function
+func (l List) Union(t List) List {
+	return Union(l, t)
+}
+
 //From - convert regular slice to List
 //
 //	as do not know the item type in the slic
@@ -450,4 +455,9 @@ func Tail(list List, n int) List {
 	}
 
 	return list[l-n:]
+}
+
+// Union - union two lists
+func Union(s List, t List) List {
+	return append(s, t)
 }
