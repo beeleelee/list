@@ -23,3 +23,14 @@ func TestIntListMap(t *testing.T) {
 		t.Errorf("intlist map error: list2 should be %v", expectedList)
 	}
 }
+
+func TestIntListFilter(t *testing.T) {
+	list1 := IntList([]int{0,1,2,3,4,5,6})
+	list2 := list1.Filter(func(v, _ int) bool {
+		return v % 2 == 0
+	})
+	expectedList := IntList([]int{0,2,4,6})
+	if !reflect.DeepEqual(list2, expectedList) {
+		t.Errorf("intlist map error: list2 should be %v", expectedList)
+	}
+}
