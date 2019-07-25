@@ -77,3 +77,8 @@ func TestIntListEvery(t *testing.T) {
 		t.Error("intlist Every eror: list should have odd int")
 	}
 }
+
+func TestIntListShuffle(t *testing.T) {
+	list := IntList([]int{1,2,3,4,5,6,7,8,9})
+	t.Log(list.Shuffle())
+}

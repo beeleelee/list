@@ -1,5 +1,13 @@
 package list
 
+import (
+	//"fmt"
+	//"math"
+	"math/rand"
+	//"sort"
+	"time"
+)
+
 // IntList implements Each Map Filter ... for int slice
 // for the sake of better performance
 type IntList []int
@@ -104,4 +112,17 @@ func (l IntList) Less(i, j int) bool {
 
 func (l IntList) Swap(i, j int) {
 	l[i], l[j] = l[j], l[i]
+}
+
+func (l IntList) Shuffle() (r IntList) {
+	size := len(l)
+	r = make([]int, size)
+	copy(r, l)
+	if size > 1 {
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(size, func(i, j int) {
+			r[i], r[j] = r[j], r[i]
+		})
+	}
+	return
 }
