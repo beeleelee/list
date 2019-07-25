@@ -2,6 +2,7 @@ package list
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"reflect"
 	"sort"
@@ -199,6 +200,11 @@ func (l List) Tail(n int) List {
 // Union convenience wrapper for Union Function
 func (l List) Union(t List) List {
 	return Union(l, t)
+}
+
+// Intersection convenience wrapper for Intersection Function
+func (l List) Intersection(t List, f EqualFn) List {
+	return Intersection(l, t, f)
 }
 
 //From - convert regular slice to List
@@ -460,4 +466,21 @@ func Tail(list List, n int) List {
 // Union - union two lists
 func Union(s List, t List) List {
 	return append(s, t...)
+}
+
+// Intersection - intersection of two lists
+func Intersection(s List, t List, f EqualFn) (r List) {
+	minLen := int(math.Min(float64(len(s)), float64(len(t))))
+	r = List(make([]Item, minLen))
+	if minLen == 0 {
+		return
+	}
+	index := 0
+	for i, v := range s {
+		if f(v, t[i]) {
+			r[index] = v
+			index++
+		}
+	}
+	return
 }
