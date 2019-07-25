@@ -49,3 +49,12 @@ func (l IntList) FindIndex(v int) (index int) {
 	}
 	return 
 }
+
+func (l IntList) Contains(v int) (r bool) {
+	if l.FindIndex(v) > -1 {
+		r = true
+	}else{
+		r = false
+	}
+	return
+}

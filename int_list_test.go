@@ -42,3 +42,10 @@ func TestIntListFindIndex(t *testing.T) {
 		t.Error("intlist FindIndex error: the index should be 3")
 	}
 }
+
+func TestIntListContains(t *testing.T) {
+	list := IntList([]int{5,8,13,17})
+	if !list.Contains(13) {
+		t.Error("intlist Contains error: list should contains 13")
+	}
+}
