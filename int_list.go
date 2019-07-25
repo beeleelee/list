@@ -4,7 +4,7 @@ import (
 	//"fmt"
 	//"math"
 	"math/rand"
-	//"sort"
+	"sort"
 	"time"
 )
 
@@ -125,4 +125,8 @@ func (l IntList) Shuffle() (r IntList) {
 		})
 	}
 	return
+}
+
+func (l IntList) Sort() {
+	sort.Sort(l)
 }

@@ -82,3 +82,9 @@ func TestIntListShuffle(t *testing.T) {
 	list := IntList([]int{1,2,3,4,5,6,7,8,9})
 	t.Log(list.Shuffle())
 }
+
+func TestIntListSort(t *testing.T) {
+	list := IntList([]int{3,9,2,5,1,7})
+	list.Sort()
+	t.Log(list)
+}
