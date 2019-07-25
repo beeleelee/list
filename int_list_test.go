@@ -11,5 +11,4 @@ func TestIntListEach(t *testing.T) {
 	list.Each(func(v int, i int){
 		t.Log(v, i)
 	})
-	t.Fail()
 }
