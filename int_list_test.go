@@ -88,3 +88,14 @@ func TestIntListSort(t *testing.T) {
 	list.Sort()
 	t.Log(list)
 }
+
+func TestIntListIsSorted(t *testing.T) {
+	list := IntList([]int{3,9,2,5,1,7})
+	listSorted := IntList([]int{1,2,3,4,5,6,7,8,9})
+	if list.IsSorted() {
+		t.Error("intlist IsSorted error: list should not have been sorted")
+	}
+	if !listSorted.IsSorted() {
+		t.Error("intlist IsSorted error: listSorted should have been sorted")
+	}
+}

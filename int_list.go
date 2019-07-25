@@ -130,3 +130,7 @@ func (l IntList) Shuffle() (r IntList) {
 func (l IntList) Sort() {
 	sort.Sort(l)
 }
+
+func (l IntList) IsSorted() bool {
+	return sort.IsSorted(l)
+}
