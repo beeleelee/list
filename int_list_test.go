@@ -59,3 +59,12 @@ func TestIntListReduce(t *testing.T) {
 		t.Error("intlist Reduce error: sum should be 43")
 	}
 }
+
+func TestIntListSome(t *testing.T) {
+	list := IntList([]int{1,2,3,4,5})
+	if !list.Some(func(v, i int) bool {
+		return v % 2 == 0
+	}) {
+		t.Error("intlist Some eror: list should have even int")
+	}
+}

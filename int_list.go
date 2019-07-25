@@ -69,3 +69,15 @@ func (l IntList) Reduce(f ILReduceFn, startv int) (r int) {
 	}
 	return 
 }
+
+func (l IntList) Some(f ILItemTestFn) (r bool) {
+	size := len(l)
+	r = false 
+	for i := 0; i < size; i++ {
+		if f(l[i], i) {
+			r = true
+			break
+		}
+	}
+	return 
+}
