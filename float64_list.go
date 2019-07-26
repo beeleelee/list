@@ -7,39 +7,39 @@ import (
 	"time"
 )
 
-// IntList implements Each Map Filter ... for int slice
+// F64List implements Each Map Filter ... for float64 slice
 // for the sake of better performance
-type IntList []int
+type F64List []float64
 
-// ILEachFn method Each handler signature
-type ILEachFn func(v, i int)
+// F64LEachFn method Each handler signature
+type F64LEachFn func(v float64, i int)
 
-// ILMapFn method Map handler signature
-type ILMapFn func(v, i int) int 
+// F64LMapFn method Map handler signature
+type F64LMapFn func(v float64, i int) float64 
 
-// ILItemTestFn method Filter handler signature
-type ILItemTestFn func(v, i int) bool
+// F64LItemTestFn method Filter handler signature
+type F64LItemTestFn func(v float64, i int) bool
 
-// ILReduceFn method Reduce handler signature
-type ILReduceFn func(a, b int) int 
+// F64LReduceFn method Reduce handler signature
+type F64LReduceFn func(a, b float64) float64 
 
-func (list IntList) Each(f ILEachFn) IntList {
+func (list F64List) Each(f F64LEachFn) F64List {
 	for i, v := range list {
 		f(v, i)
 	}
 	return list
 }
 
-func (list IntList) Map(f ILMapFn) (r IntList) {
-	r = IntList(make([]int, len(list)))
+func (list F64List) Map(f F64LMapFn) (r F64List) {
+	r = F64List(make([]float64, len(list)))
 	for i, v := range list {
 		r[i] = f(v, i)
 	}
 	return
 }
 
-func (list IntList) Filter(f ILItemTestFn) (r IntList) {
-	r = IntList([]int{})
+func (list F64List) Filter(f F64LItemTestFn) (r F64List) {
+	r = F64List([]float64{})
 	for i, v := range list {
 		if f(v, i) {
 			r = append(r, v)
@@ -48,7 +48,7 @@ func (list IntList) Filter(f ILItemTestFn) (r IntList) {
 	return 
 }
 
-func (list IntList) FindIndex(v int) (index int) {
+func (list F64List) FindIndex(v float64) (index int) {
 	l := len(list)
 	index = -1
 	for i := 0; i < l; i++ {
@@ -60,7 +60,7 @@ func (list IntList) FindIndex(v int) (index int) {
 	return 
 }
 
-func (list IntList) Contains(v int) (r bool) {
+func (list F64List) Contains(v float64) (r bool) {
 	if list.FindIndex(v) > -1 {
 		r = true
 	}else{
@@ -69,7 +69,7 @@ func (list IntList) Contains(v int) (r bool) {
 	return
 }
 
-func (list IntList) Reduce(f ILReduceFn, startv int) (r int) {
+func (list F64List) Reduce(f F64LReduceFn, startv float64) (r float64) {
 	r = startv 
 	for _, v := range list {
 		r = f(r, v)
@@ -77,7 +77,7 @@ func (list IntList) Reduce(f ILReduceFn, startv int) (r int) {
 	return 
 }
 
-func (list IntList) Some(f ILItemTestFn) (r bool) {
+func (list F64List) Some(f F64LItemTestFn) (r bool) {
 	l := len(list)
 	r = false 
 	for i := 0; i < l; i++ {
@@ -89,7 +89,7 @@ func (list IntList) Some(f ILItemTestFn) (r bool) {
 	return 
 }
 
-func (list IntList) Every(f ILItemTestFn) (r bool) {
+func (list F64List) Every(f F64LItemTestFn) (r bool) {
 	l := len(list)
 	r = true 
 	for i := 0; i < l; i++ {
@@ -101,21 +101,21 @@ func (list IntList) Every(f ILItemTestFn) (r bool) {
 	return 
 }
 
-func (list IntList) Len() int {
+func (list F64List) Len() int {
 	return len(list)
 }
 
-func (list IntList) Less(i, j int) bool {
+func (list F64List) Less(i, j int) bool {
 	return list[i] < list[j]
 }
 
-func (list IntList) Swap(i, j int) {
+func (list F64List) Swap(i, j int) {
 	list[i], list[j] = list[j], list[i]
 }
 
-func (list IntList) Shuffle() (r IntList) {
+func (list F64List) Shuffle() (r F64List) {
 	l := len(list)
-	r = make([]int, l)
+	r = make([]float64, l)
 	copy(r, list)
 	if l > 1 {
 		rand.Seed(time.Now().UnixNano())
@@ -126,15 +126,15 @@ func (list IntList) Shuffle() (r IntList) {
 	return
 }
 
-func (list IntList) Sort() {
+func (list F64List) Sort() {
 	sort.Sort(list)
 }
 
-func (list IntList) IsSorted() bool {
+func (list F64List) IsSorted() bool {
 	return sort.IsSorted(list)
 }
 
-func (list IntList) Get(i int) (int, bool) {
+func (list F64List) Get(i int) (float64, bool) {
 	l := len(list)
 	if l == 0 {
 		return 0, false
@@ -152,7 +152,7 @@ func (list IntList) Get(i int) (int, bool) {
 	return list[index], true
 }
 
-func (list IntList) Tail(n int) IntList {
+func (list F64List) Tail(n int) F64List {
 	l := len(list)
 	if l == 0 || n >= l {
 		return list
@@ -161,13 +161,13 @@ func (list IntList) Tail(n int) IntList {
 	return list[l-n:]
 }
 
-func (list IntList) Union(t IntList) IntList {
+func (list F64List) Union(t F64List) F64List {
 	return append(list, t...)
 }
 
-func (list IntList) Intersection(t IntList) (r IntList) {
+func (list F64List) Intersection(t F64List) (r F64List) {
 	minLen := int(math.Min(float64(len(list)), float64(len(t))))
-	r = IntList(make([]int, minLen))
+	r = F64List(make([]float64, minLen))
 	if minLen == 0 {
 		return
 	}
@@ -182,9 +182,9 @@ func (list IntList) Intersection(t IntList) (r IntList) {
 	return
 }
 
-func (list IntList) Difference(t IntList) (r IntList) {
+func (list F64List) Difference(t F64List) (r F64List) {
 	minLen := int(math.Min(float64(len(list)), float64(len(t))))
-	r = IntList(make([]int, minLen))
+	r = F64List(make([]float64, minLen))
 	if minLen == 0 {
 		return
 	}
