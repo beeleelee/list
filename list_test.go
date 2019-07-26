@@ -3,7 +3,7 @@ package list_test
 import (
 	"testing"
 	"reflect"
-	. "../list"
+	. "github.com/beeleelee/list"
 )
 
 func cmp(a, b Item) bool {
