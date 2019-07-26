@@ -153,3 +153,21 @@ func TestIntListIntersection(t *testing.T) {
 		t.Error("intlist Intersection error, intersect list should be [1,0]")
 	}
 }
+
+func TestIntListDifference(t *testing.T) {
+	l1 := IntList([]int{0,1,2,4,7})
+	l2 := IntList([]int{3,4,5,6,9,8})
+	l3 := IntList([]int{1,6,5,0})
+	t.Log(l2.Difference(l1))
+	t.Log(l2.Difference(l3))
+	t.Log(l3.Difference(l1))
+	if !reflect.DeepEqual(l1.Difference(l2), IntList([]int{0,1,2,7})) {
+		t.Error("intlist Deference error, difference list should be [4]")
+	}
+	if !reflect.DeepEqual(l2.Difference(l3), IntList([]int{3,4,9,8})) {
+		t.Error("intlist Deference error, difference list should be [5,6]")
+	}
+	if !reflect.DeepEqual(l3.Difference(l1), IntList([]int{6,5})) {
+		t.Error("intlist Deference error, difference list should be [1,0]")
+	}
+}

@@ -278,12 +278,12 @@ func TestDifference(t *testing.T) {
 	t.Log(l2.Difference(l3, cmp))
 	t.Log(l3.Difference(l1, cmp))
 	if !reflect.DeepEqual(Difference(l1, l2, cmp), List([]Item{0,1,2,7})) {
-		t.Error("intersection error, intersect list should be [4]")
+		t.Error("difference error, difference list should be [4]")
 	}
 	if !reflect.DeepEqual(l2.Difference(l3, cmp), List([]Item{3,4,9,8})) {
-		t.Error("intersection error, intersect list should be [5,6]")
+		t.Error("difference error, difference list should be [5,6]")
 	}
 	if !reflect.DeepEqual(l3.Difference(l1, cmp), List([]Item{6,5})) {
-		t.Error("intersection error, intersect list should be [1,0]")
+		t.Error("difference error, difference list should be [1,0]")
 	}
 }

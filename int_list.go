@@ -182,3 +182,20 @@ func (list IntList) Intersection(t IntList) (r IntList) {
 	r = r[0:index]
 	return
 }
+
+func (list IntList) Difference(t IntList) (r IntList) {
+	minLen := int(math.Min(float64(len(list)), float64(len(t))))
+	r = IntList(make([]int, minLen))
+	if minLen == 0 {
+		return
+	}
+	index := 0
+	for _, v := range list {
+		if !t.Contains(v) {
+			r[index] = v
+			index++
+		}
+	}
+	r = r[0:index]
+	return
+}
