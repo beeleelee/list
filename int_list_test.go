@@ -116,3 +116,13 @@ func TestIntListGet(t *testing.T) {
 	}
 	
 }
+
+func TestIntListTail(t *testing.T) {
+	list := IntList([]int{0,1,2,3,4,5,6,7,8,9})
+	if !reflect.DeepEqual(list.Tail(1), IntList([]int{9})) {
+		t.Error("intlist Tail error, it should be [9]")
+	}
+	if !reflect.DeepEqual(list.Tail(3), IntList([]int{7,8,9})) {
+		t.Error("intlist Tail error, it should be [7,8,9]")
+	}
+}

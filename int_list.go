@@ -152,3 +152,12 @@ func (list IntList) Get(i int) (int, bool) {
 	}
 	return list[index], true
 }
+
+func (list IntList) Tail(n int) IntList {
+	l := len(list)
+	if l == 0 || n >= l {
+		return list
+	}
+
+	return list[l-n:]
+}
