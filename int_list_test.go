@@ -126,3 +126,12 @@ func TestIntListTail(t *testing.T) {
 		t.Error("intlist Tail error, it should be [7,8,9]")
 	}
 }
+
+func TestIntListUnion(t *testing.T) {
+	list1 := IntList([]int{1,2,3})
+	list2 := IntList([]int{4,5,6})
+	list3 := IntList([]int{1,2,3,4,5,6})
+	if !reflect.DeepEqual(list3, list1.Union(list2)) {
+		t.Error("intlist Union error, list1 union list2 should be equal to list3")
+	}
+}

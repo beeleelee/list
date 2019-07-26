@@ -161,3 +161,7 @@ func (list IntList) Tail(n int) IntList {
 
 	return list[l-n:]
 }
+
+func (list IntList) Union(t IntList) IntList {
+	return append(list, t...)
+}
