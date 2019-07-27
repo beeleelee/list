@@ -162,3 +162,10 @@ func TestStrListDifference(t *testing.T) {
 		t.Error("stringlist Deference error, difference list should be [b,d,f]")
 	}
 }
+
+func TestStrListJoin(t *testing.T) {
+	list := StrList([]string{"I", "am", "coding"})
+	if list.Join(" ") != "I am coding" {
+		t.Error("stringlist Join error, joined string is `I am coding`")
+	}
+}

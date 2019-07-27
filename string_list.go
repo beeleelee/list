@@ -4,6 +4,7 @@ import (
 	"math"
 	"math/rand"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -186,4 +187,8 @@ func (list StrList) Difference(t StrList) (r StrList) {
 	}
 	r = r[0:index]
 	return
+}
+
+func (list StrList) Join(sep string) string {
+	return strings.Join(list, sep)
 }
