@@ -1,8 +1,9 @@
 package list_test
 
 import (
-	"testing"
 	"reflect"
+	"testing"
+
 	. "github.com/beeleelee/list"
 )
 
@@ -11,13 +12,13 @@ func cmp(a, b Item) bool {
 }
 
 func TestEach(t *testing.T) {
-	list, err := From([]int{1,3,5,7,9})
+	list, err := From([]int{1, 3, 5, 7, 9})
 	if err != nil {
 		t.Errorf("%v", err)
-		return 
+		return
 	}
 	list2 := New(len(list))
-	Each(list, func(v Item, i int){
+	Each(list, func(v Item, i int) {
 		list2[i] = v
 	})
 	t.Log(list, list2)
@@ -27,22 +28,22 @@ func TestEach(t *testing.T) {
 }
 
 func TestMap(t *testing.T) {
-	list := FromInts([]int{1,3,5,7,9})
+	list := FromInts([]int{1, 3, 5, 7, 9})
 	list2 := list.Map(func(v Item, i int) Item {
 		return v.(int) * 2
 	})
-	if !Equal(list2, []Item{2,6,10,14,18}, cmp) {
-		t.Errorf("expect list2: %v to be %v", list2, []Item{2,6,10,14,18})
+	if !Equal(list2, []Item{2, 6, 10, 14, 18}, cmp) {
+		t.Errorf("expect list2: %v to be %v", list2, []Item{2, 6, 10, 14, 18})
 	}
 }
 
 func TestFilter(t *testing.T) {
-	list, _ := From([]int{1,2,3,4,5,6,7})
+	list, _ := From([]int{1, 2, 3, 4, 5, 6, 7})
 	list2 := list.Filter(func(v Item, i int) bool {
-		return v.(int) % 2 == 0
+		return v.(int)%2 == 0
 	})
-	if !Equal(list2, []Item{2,4,6}, cmp) {
-		t.Errorf("expect list2: %v to be %v", list2, []Item{2,4,6})
+	if !Equal(list2, []Item{2, 4, 6}, cmp) {
+		t.Errorf("expect list2: %v to be %v", list2, []Item{2, 4, 6})
 	}
 }
 
@@ -59,7 +60,7 @@ func TestFindIndex(t *testing.T) {
 func TestEqual(t *testing.T) {
 	a := []Item{'a', 'b', 'c', 'd', 'e'}
 	b := []Item{'a', 'b', 'c', 'd', 'e'}
-	
+
 	if !Equal(a, b, cmp) {
 		t.Errorf("expect a: %v should be equal to b: %v, but got not equal", a, b)
 	}
@@ -68,19 +69,19 @@ func TestEqual(t *testing.T) {
 func TestFind(t *testing.T) {
 	type User struct {
 		name string
-		age int
+		age  int
 	}
 	userAlex := User{"alex", 38}
 	userBeeleelee := User{"beeleelee", 40}
-	list, _ := From([]User{userAlex,userBeeleelee})
+	list, _ := From([]User{userAlex, userBeeleelee})
 	item, ok := Find(list, func(v Item, i int) bool {
 		return v.(User).name == "alex"
 	})
-	
+
 	if userAlex == item {
 		t.Logf("%v equals %v, %v", item, userAlex, ok)
 	}
-	
+
 	if !ok {
 		t.Errorf("find error, it should find user alex")
 	}
@@ -97,20 +98,20 @@ func TestFind(t *testing.T) {
 func TestContains(t *testing.T) {
 	type User struct {
 		name string
-		age int
+		age  int
 	}
-	list, _ := From([]User{{"alex", 38},{"beeleelee", 40}})
+	list, _ := From([]User{{"alex", 38}, {"beeleelee", 40}})
 	hasFoo := Contains(list, func(v Item, i int) bool {
 		return v.(User).name == "foo"
 	})
-	
+
 	if hasFoo {
 		t.Errorf("contains error, list does not contains user foo")
 	}
 }
 
 func TestReduce(t *testing.T) {
-	intList, _ := From([]int{0,1,2,3,4,5})
+	intList, _ := From([]int{0, 1, 2, 3, 4, 5})
 	total := Reduce(intList, func(a, b Item) Item {
 		return a.(int) + b.(int)
 	}, nil)
@@ -162,7 +163,7 @@ func TestEvery(t *testing.T) {
 }
 
 func TestShuffle(t *testing.T) {
-	list := FromInts([]int{0,1,2,3,4,5,6,7,8,9})
+	list := FromInts([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
 	list2 := Shuffle(list)
 	t.Log(list2)
 	list3 := list.Shuffle()
@@ -170,17 +171,17 @@ func TestShuffle(t *testing.T) {
 }
 
 func TestSort(t *testing.T) {
-	list := FromInts([]int{9,5,3,7,2,8,0,4,1,6})
+	list := FromInts([]int{9, 5, 3, 7, 2, 8, 0, 4, 1, 6})
 	Sort(list, func(i, j int) bool {
 		return list[i].(int) < list[j].(int)
 	})
 	t.Log(list)
-	if !reflect.DeepEqual(list, FromInts([]int{0,1,2,3,4,5,6,7,8,9})) {
+	if !reflect.DeepEqual(list, FromInts([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})) {
 		t.Error("sort error, sorted items has wrong order")
 	}
 	type Student struct {
-		name string 
-		id int 
+		name string
+		id   int
 	}
 	list2, _ := From([]Student{{"leo", 1}, {"lucy", 2}, {"tom", 3}})
 	Sort(list2, func(i, j int) bool {
@@ -195,7 +196,7 @@ func TestSort(t *testing.T) {
 }
 
 func TestIsSorted(t *testing.T) {
-	list := FromInts([]int{9,5,3,7,2,8,0,4,1,6})
+	list := FromInts([]int{9, 5, 3, 7, 2, 8, 0, 4, 1, 6})
 	if list.IsSorted(func(i, j int) bool {
 		return list[i].(int) < list[j].(int)
 	}) {
@@ -204,7 +205,7 @@ func TestIsSorted(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	list := FromInts([]int{0,1,2,3,4,5,6,7,8,9})
+	list := FromInts([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
 	if Get(list, -1) != 9 {
 		t.Error("get error, it should get item 9")
 	}
@@ -223,13 +224,13 @@ func TestGet(t *testing.T) {
 }
 
 func TestTail(t *testing.T) {
-	list := FromInts([]int{1,2,3,4,5})
+	list := FromInts([]int{1, 2, 3, 4, 5})
 	last1 := Tail(list, 1)
 	if last1[0].(int) != 5 {
 		t.Error("lastN error, last1 should be [5]")
 	}
 	last3 := Tail(list, 3)
-	if !reflect.DeepEqual(last3, List([]Item{3,4,5})) {
+	if !reflect.DeepEqual(last3, List([]Item{3, 4, 5})) {
 		t.Error("lastN error, last3 should be [3,4,5]")
 	}
 	last10 := list.Tail(10)
@@ -237,15 +238,15 @@ func TestTail(t *testing.T) {
 		t.Error("lastN error, last10 should be equal witch list")
 	}
 	last4 := list.Tail(4)
-	if !reflect.DeepEqual(last4, List([]Item{2,3,4,5})) {
+	if !reflect.DeepEqual(last4, List([]Item{2, 3, 4, 5})) {
 		t.Log(last4)
 		t.Error("lastN error, last4 should be [2,3,4,5]")
 	}
 }
 
 func TestUnion(t *testing.T) {
-	l1 := FromInts([]int{0,1,2})
-	l2 := FromInts([]int{3,4,5})
+	l1 := FromInts([]int{0, 1, 2})
+	l2 := FromInts([]int{3, 4, 5})
 	l3 := FromStrings([]string{"apple", "banana", "orange"})
 	t.Log(Union(l1, l2))
 	t.Log(l2.Union(l3))
@@ -253,37 +254,58 @@ func TestUnion(t *testing.T) {
 }
 
 func TestIntersection(t *testing.T) {
-	l1 := FromInts([]int{0,1,2,4,7})
-	l2 := FromInts([]int{3,4,5,6,9,8})
-	l3 := FromInts([]int{1,6,5,0})
+	l1 := FromInts([]int{0, 1, 2, 4, 7})
+	l2 := FromInts([]int{3, 4, 5, 6, 9, 8})
+	l3 := FromInts([]int{1, 6, 5, 0})
 	t.Log(Intersection(l2, l1, cmp))
 	t.Log(l2.Intersection(l3, cmp))
 	t.Log(l3.Intersection(l1, cmp))
 	if !reflect.DeepEqual(Intersection(l1, l2, cmp), List([]Item{4})) {
 		t.Error("intersection error, intersect list should be [4]")
 	}
-	if !reflect.DeepEqual(l2.Intersection(l3, cmp), List([]Item{5,6})) {
+	if !reflect.DeepEqual(l2.Intersection(l3, cmp), List([]Item{5, 6})) {
 		t.Error("intersection error, intersect list should be [5,6]")
 	}
-	if !reflect.DeepEqual(l3.Intersection(l1, cmp), List([]Item{1,0})) {
+	if !reflect.DeepEqual(l3.Intersection(l1, cmp), List([]Item{1, 0})) {
 		t.Error("intersection error, intersect list should be [1,0]")
 	}
 }
 
 func TestDifference(t *testing.T) {
-	l1 := FromInts([]int{0,1,2,4,7})
-	l2 := FromInts([]int{3,4,5,6,9,8})
-	l3 := FromInts([]int{1,6,5,0})
+	l1 := FromInts([]int{0, 1, 2, 4, 7})
+	l2 := FromInts([]int{3, 4, 5, 6, 9, 8})
+	l3 := FromInts([]int{1, 6, 5, 0})
 	t.Log(Difference(l2, l1, cmp))
 	t.Log(l2.Difference(l3, cmp))
 	t.Log(l3.Difference(l1, cmp))
-	if !reflect.DeepEqual(Difference(l1, l2, cmp), List([]Item{0,1,2,7})) {
+	if !reflect.DeepEqual(Difference(l1, l2, cmp), List([]Item{0, 1, 2, 7})) {
 		t.Error("difference error, difference list should be [4]")
 	}
-	if !reflect.DeepEqual(l2.Difference(l3, cmp), List([]Item{3,4,9,8})) {
+	if !reflect.DeepEqual(l2.Difference(l3, cmp), List([]Item{3, 4, 9, 8})) {
 		t.Error("difference error, difference list should be [5,6]")
 	}
-	if !reflect.DeepEqual(l3.Difference(l1, cmp), List([]Item{6,5})) {
+	if !reflect.DeepEqual(l3.Difference(l1, cmp), List([]Item{6, 5})) {
 		t.Error("difference error, difference list should be [1,0]")
 	}
+}
+
+func TestGroupBy(t *testing.T) {
+	type circle struct {
+		color string
+		x     float64
+		y     float64
+		r     float64
+	}
+	circles, _ := From([]circle{
+		{"red", 0, 0, 3},
+		{"blue", 2, 6, 3},
+		{"green", 5, 9, 3},
+		{"red", 3, 3, 5},
+		{"blue", 10, 10, 5},
+		{"yellow", 8, 8, 5},
+	})
+	circlesGroupByColor := circles.GroupBy(func(v Item, _ int) string {
+		return v.(circle).color
+	})
+	t.Log(circlesGroupByColor)
 }

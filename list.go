@@ -59,6 +59,9 @@ type SwapFn func(i, j int)
 // LessFn same signature as sort.Less
 type LessFn func(i, j int) bool
 
+// GroupByFn handle to return group key
+type GroupByFn func(v Item, i int) string
+
 // Each convenience wrapper for Each function
 func (l List) Each(f EachFn) List {
 	Each(l, f)
@@ -149,6 +152,11 @@ func (l List) Intersection(t List, f EqualFn) List {
 // Difference convenience wrapper for Difference Function
 func (l List) Difference(t List, f EqualFn) List {
 	return Difference(l, t, f)
+}
+
+// GroupBy convenience wrapper for GroupBy Function
+func (l List) GroupBy(f GroupByFn) map[string]List {
+	return GroupBy(l, f)
 }
 
 //From - convert regular slice to List
@@ -452,5 +460,20 @@ func Difference(s List, t List, f EqualFn) (r List) {
 		}
 	}
 	r = r[0:index]
+	return
+}
+
+// GroupBy - return a grouped map
+func GroupBy(list List, f GroupByFn) (r map[string]List) {
+	r = make(map[string]List)
+	for i, v := range list {
+		key := f(v, i)
+		existedList, ok := r[key]
+		if ok {
+			r[key] = append(existedList, v)
+		} else {
+			r[key] = []Item{v}
+		}
+	}
 	return
 }
