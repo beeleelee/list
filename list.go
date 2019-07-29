@@ -247,7 +247,7 @@ func Map(list List, f MapFn) List {
 func ParallelMap(list List, f MapFn) List {
 	l := len(list)
 	var item Item
-	placeholder := make(chan Item)
+	placeholder := make(chan Item, l)
 	mapedList := List(make([]Item, l))
 	for i, v := range list {
 		go func(v Item, i int) {
