@@ -32,7 +32,7 @@ func TestMap(t *testing.T) {
 	list2 := list.Map(func(v Item, i int) Item {
 		return v.(int) * 2
 	})
-	if !Equal(list2, []Item{2, 6, 10, 14, 18}, cmp) {
+	if !reflect.DeepEqual(list2, List([]Item{2, 6, 10, 14, 18})) {
 		t.Errorf("expect list2: %v to be %v", list2, []Item{2, 6, 10, 14, 18})
 	}
 }
@@ -42,7 +42,7 @@ func TestFilter(t *testing.T) {
 	list2 := list.Filter(func(v Item, i int) bool {
 		return v.(int)%2 == 0
 	})
-	if !Equal(list2, []Item{2, 4, 6}, cmp) {
+	if !Equal(list2, List([]Item{2, 4, 6}), cmp) {
 		t.Errorf("expect list2: %v to be %v", list2, []Item{2, 4, 6})
 	}
 }

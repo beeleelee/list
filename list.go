@@ -212,7 +212,7 @@ func FromStrings(source []string) (nl List) {
 
 // New generate a new List instance
 func New(length int) List {
-	return make([]Item, length)
+	return List(make([]Item, length))
 }
 
 // Each - each loop
@@ -235,6 +235,24 @@ func Map(list List, f MapFn) List {
 	for i, v := range list {
 		mapedList[i] = f(v, i)
 	}
+	return List(mapedList)
+}
+
+// ParallelMap - map items in goroutines
+func ParallelMap(list List, f MapFn) List {
+	l := len(list)
+	var item Item
+	placeholder := make(chan Item)
+	mapedList := List(make([]Item, l))
+	for i, v := range list {
+		go func(v Item, i int) {
+			mapedList[i] = f(v, i)
+			placeholder <- item
+		}(v, i)
+	}
+	for i := 0; i < l; i++ {
+		<-placeholder
+	}
 	return mapedList
 }
 
@@ -250,7 +268,7 @@ func Filter(list List, f ItemTestFn) List {
 			filteredList = append(filteredList, v)
 		}
 	})
-	return filteredList
+	return List(filteredList)
 }
 
 // Equal - a way to compare whether two list is equal
@@ -365,7 +383,7 @@ func Every(list List, f ItemTestFn) (r bool) {
 // Shuffle - return a shuffled list
 func Shuffle(list List) (r List) {
 	l := len(list)
-	r = make([]Item, l)
+	r = List(make([]Item, l))
 	copy(r, list)
 	if l > 1 {
 		rand.Seed(time.Now().UnixNano())
