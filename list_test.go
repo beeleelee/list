@@ -37,6 +37,16 @@ func TestMap(t *testing.T) {
 	}
 }
 
+func TestParallelMap(t *testing.T) {
+	list := FromInts([]int{1, 3, 5, 7, 9})
+	list2 := list.ParallelMap(func(v Item, i int) Item {
+		return v.(int) * 2
+	})
+	if !reflect.DeepEqual(list2, List([]Item{2, 6, 10, 14, 18})) {
+		t.Errorf("expect list2: %v to be %v", list2, []Item{2, 6, 10, 14, 18})
+	}
+}
+
 func TestFilter(t *testing.T) {
 	list, _ := From([]int{1, 2, 3, 4, 5, 6, 7})
 	list2 := list.Filter(func(v Item, i int) bool {

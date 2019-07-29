@@ -73,6 +73,11 @@ func (l List) Map(f MapFn) List {
 	return Map(l, f)
 }
 
+// ParallelMap convenience wrapper for ParallelMap function
+func (l List) ParallelMap(f MapFn) List {
+	return ParallelMap(l, f)
+}
+
 // Filter convenience wrapper for Filter function
 func (l List) Filter(f ItemTestFn) List {
 	return Filter(l, f)
