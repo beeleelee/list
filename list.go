@@ -59,6 +59,9 @@ type SwapFn func(i, j int)
 // LessFn same signature as sort.Less
 type LessFn func(i, j int) bool
 
+// GroupByFn handle to return group key
+type GroupByFn func(v Item, i int) string
+
 // Each convenience wrapper for Each function
 func (l List) Each(f EachFn) List {
 	Each(l, f)
@@ -68,6 +71,11 @@ func (l List) Each(f EachFn) List {
 // Map convenience wrapper for Map function
 func (l List) Map(f MapFn) List {
 	return Map(l, f)
+}
+
+// ParallelMap convenience wrapper for ParallelMap function
+func (l List) ParallelMap(f MapFn) List {
+	return ParallelMap(l, f)
 }
 
 // Filter convenience wrapper for Filter function
@@ -151,6 +159,11 @@ func (l List) Difference(t List, f EqualFn) List {
 	return Difference(l, t, f)
 }
 
+// GroupBy convenience wrapper for GroupBy Function
+func (l List) GroupBy(f GroupByFn) map[string]List {
+	return GroupBy(l, f)
+}
+
 //From - convert regular slice to List
 //
 //	as do not know the item type in the slic
@@ -204,7 +217,7 @@ func FromStrings(source []string) (nl List) {
 
 // New generate a new List instance
 func New(length int) List {
-	return make([]Item, length)
+	return List(make([]Item, length))
 }
 
 // Each - each loop
@@ -227,6 +240,24 @@ func Map(list List, f MapFn) List {
 	for i, v := range list {
 		mapedList[i] = f(v, i)
 	}
+	return List(mapedList)
+}
+
+// ParallelMap - map items in goroutines
+func ParallelMap(list List, f MapFn) List {
+	l := len(list)
+	var item Item
+	placeholder := make(chan Item, l)
+	mapedList := List(make([]Item, l))
+	for i, v := range list {
+		go func(v Item, i int) {
+			mapedList[i] = f(v, i)
+			placeholder <- item
+		}(v, i)
+	}
+	for i := 0; i < l; i++ {
+		<-placeholder
+	}
 	return mapedList
 }
 
@@ -242,7 +273,7 @@ func Filter(list List, f ItemTestFn) List {
 			filteredList = append(filteredList, v)
 		}
 	})
-	return filteredList
+	return List(filteredList)
 }
 
 // Equal - a way to compare whether two list is equal
@@ -357,7 +388,7 @@ func Every(list List, f ItemTestFn) (r bool) {
 // Shuffle - return a shuffled list
 func Shuffle(list List) (r List) {
 	l := len(list)
-	r = make([]Item, l)
+	r = List(make([]Item, l))
 	copy(r, list)
 	if l > 1 {
 		rand.Seed(time.Now().UnixNano())
@@ -452,5 +483,20 @@ func Difference(s List, t List, f EqualFn) (r List) {
 		}
 	}
 	r = r[0:index]
+	return
+}
+
+// GroupBy - return a grouped map
+func GroupBy(list List, f GroupByFn) (r map[string]List) {
+	r = make(map[string]List)
+	for i, v := range list {
+		key := f(v, i)
+		existedList, ok := r[key]
+		if ok {
+			r[key] = append(existedList, v)
+		} else {
+			r[key] = []Item{v}
+		}
+	}
 	return
 }
